@@ -10,8 +10,11 @@ var GRAVITY = 200;
 var MAX_FALL_SPEED = 300
 
 onready var playerAnimation = $PlayerAnimation
-onready var attackArea = $AttackArea
-onready var attackAreaCollision = $AttackArea/AttackCollision
+onready var leftAttackArea = $AttackArea
+onready var leftAttackAreaCollision = $AttackArea/AttackCollision
+
+onready var rightAttackArea = $AttackArea2
+onready var rightAttackAreaCollision = $AttackArea2/AttackCollision
 
 signal animate
 signal attackAnimate
@@ -20,17 +23,17 @@ var is_facing_right;
 
 func ready():
 	is_facing_right = true;
-	attackArea.set_collision_mask_bit(2, false)
+	leftAttackArea.set_collision_mask_bit(2, false)
 	is_attacking = false
 	
 func _process(delta):
+	print(is_facing_right)
 	apply_gravity()
 	if not is_attacking:
 		walk()
 		jump()
 		animate()
 		attack()
-		update_attack_collision()
 	move_and_slide(motion, motion_up)
 
 func walk():
@@ -67,14 +70,19 @@ func animate():
 	
 func attackAnimate():
 	is_attacking = true
-	attackAreaCollision.disabled = false
+	if(is_facing_right):
+		leftAttackAreaCollision.disabled = false
+	else:
+		rightAttackAreaCollision.disabled = false
 	emit_signal("attackAnimate")
 	yield(get_node("PlayerAnimation"), "animation_finished")
 	is_attacking = false
-	attackAreaCollision.disabled = true
+	leftAttackAreaCollision.disabled = true
+	rightAttackAreaCollision.disabled = true
 
 func _on_AttackArea_body_entered(body):
-	body.hurt()
+	body.hurt(is_facing_right)
 
-func update_attack_collision():
-	pass
+
+func _on_AttackArea2_body_entered(body):
+	body.hurt(is_facing_right)

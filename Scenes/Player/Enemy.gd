@@ -33,11 +33,14 @@ func chase_player(player, delta):
 func _on_VisibilityNotifier2D_screen_entered():
 	set_physics_process(true)
 
-func hurt():
+func hurt(var is_facing_right):
 	print("OUCH!")
 	life -= 1
-	motion.y -= 500
-	motion.x = 300
+	var direction = 1
+	if(!is_facing_right):
+		direction = -1
+	motion.y -= 700
+	motion.x = 500 * direction
 
 func apply_gravity():
 	if is_on_floor() and motion.y > 0: 
