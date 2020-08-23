@@ -11,13 +11,8 @@ func _on_Player_animate(motion, GRAVITY, is_facing_right):
 		play("fall")
 	elif motion.x != 0:
 		play("move")
-
 	else: 
 		play("idle")
-		
-
 
 func _on_Player_attackAnimate():
 	play("attack")
-
-	

@@ -19,13 +19,14 @@ onready var rightAttackAreaCollision = $AttackArea2/AttackCollision
 signal animate
 signal attackAnimate
 
-var is_facing_right;
+var is_facing_right
 
 func ready():
 	is_facing_right = true;
 	leftAttackArea.set_collision_mask_bit(2, false)
 	is_attacking = false
 	
+# warning-ignore:unused_argument
 func _process(delta):
 	print(is_facing_right)
 	apply_gravity()
@@ -34,6 +35,7 @@ func _process(delta):
 		jump()
 		animate()
 		attack()
+		dash()
 	move_and_slide(motion, motion_up)
 
 func walk():
@@ -86,3 +88,11 @@ func _on_AttackArea_body_entered(body):
 
 func _on_AttackArea2_body_entered(body):
 	body.hurt(is_facing_right)
+
+func dash():
+	if Input.is_action_just_pressed("dash"):
+		if(is_facing_right):
+			motion.x += 10000
+		else: 
+			motion.x -= 10000
+		
