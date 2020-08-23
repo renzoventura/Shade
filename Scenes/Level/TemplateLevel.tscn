@@ -1,11 +1,33 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Scenes/Player/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/Environment/Floor.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Scenes/Player/Enemy.tscn" type="PackedScene" id=3]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 20.8151, 423.624 )
 
 [node name="TemplateLevel" type="Node2D"]
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
+position = Vector2( 231.202, 398.334 )
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+position = Vector2( -21.1295, 319.218 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2( 52.7426, 0 )
+shape = SubResource( 1 )
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="."]
+position = Vector2( -10.5811, 317.46 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2"]
+position = Vector2( 1010.24, 18.0881 )
+shape = SubResource( 1 )
 
 [node name="Floor" parent="." instance=ExtResource( 2 )]
-position = Vector2( 3.68828, 55.6316 )
+position = Vector2( 562.217, 573.203 )
+
+[node name="Enemy" parent="." instance=ExtResource( 3 )]
+position = Vector2( 621.905, 414.785 )
