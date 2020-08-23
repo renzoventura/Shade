@@ -21,6 +21,8 @@ signal attackAnimate
 
 var is_facing_right
 
+onready var newSprite = $Sprite/AnimationPlayer
+
 func ready():
 	is_facing_right = true;
 	leftAttackArea.set_collision_mask_bit(2, false)
@@ -28,14 +30,16 @@ func ready():
 	
 # warning-ignore:unused_argument
 func _process(delta):
-	print(is_facing_right)
+
 	apply_gravity()
 	if not is_attacking:
 		walk()
+		newMove()
 		jump()
-		animate()
+#		animate()
 		attack()
 		dash()
+
 	move_and_slide(motion, motion_up)
 
 func walk():
@@ -63,13 +67,14 @@ func jump():
 		
 func attack():
 	if Input.is_action_just_pressed("attack"):
-		attackAnimate()
+#		attackAnimate()
+		newAttack()
 
 
 func animate():
 	if not is_attacking:
 		emit_signal("animate", motion, GRAVITY, is_facing_right)
-	
+
 func attackAnimate():
 	is_attacking = true
 	if(is_facing_right):
@@ -95,4 +100,27 @@ func dash():
 			motion.x += 10000
 		else: 
 			motion.x -= 10000
-		
+
+func newMove():
+	if is_facing_right:
+		$Sprite.flip_h = false
+	else:
+		$Sprite.flip_h = true
+	if motion.x != 0:
+		newSprite.play("walk")
+	else: 
+		newSprite.play("idle")
+
+
+func newAttack():
+	print("new attack!!!s")
+	is_attacking = true
+	if(is_facing_right):
+		leftAttackAreaCollision.disabled = false
+	else:
+		rightAttackAreaCollision.disabled = false
+	newSprite.play("attack")
+	yield(get_node("Sprite/AnimationPlayer"), "animation_finished")
+	is_attacking = false
+	leftAttackAreaCollision.disabled = true
+	rightAttackAreaCollision.disabled = true
