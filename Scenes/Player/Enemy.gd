@@ -9,6 +9,8 @@ var JUMP_SPEED = 1800;
 var GRAVITY = 2000;
 var MAX_FALL_SPEED = 3000
 
+var life = 3
+
 export(int) var ACCELERATION = 10
 
 func _ready():
@@ -19,13 +21,13 @@ func _physics_process(delta):
 	var player = get_tree().get_root().find_node("Player", true, false)
 	if player != null:
 		chase_player(player, delta)
+	animate()
+	die()
 
 func chase_player(player, delta):
 	var direction = (player.global_position - global_position).normalized()
-#	motion += direction * ACCELERATION * delta
-#	motion = motion.clamped(SPEED)
 	motion += direction * ACCELERATION
-	$AnimatedSprite.flip_h = global_position > player.global_position
+	$Sprite.flip_h = global_position > player.global_position
 	motion = move_and_slide(motion)
 
 func _on_VisibilityNotifier2D_screen_entered():
@@ -33,10 +35,10 @@ func _on_VisibilityNotifier2D_screen_entered():
 
 func hurt():
 	print("OUCH!")
+	life -= 1
 	motion.y -= 500
 	motion.x = 300
 
-	
 func apply_gravity():
 	if is_on_floor() and motion.y > 0: 
 		motion.y = 0
@@ -45,3 +47,11 @@ func apply_gravity():
 	else:
 		if(motion.y < MAX_FALL_SPEED):
 			motion.y += GRAVITY
+
+func animate():
+	if motion.x != 0:
+		$Sprite/AnimationPlayer.play("Walk")
+
+func die():
+	if(life < 0):
+		queue_free()

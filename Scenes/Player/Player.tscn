@@ -10,6 +10,7 @@ extents = Vector2( 38.7332, 45.9868 )
 extents = Vector2( 53.4169, 65.8811 )
 
 [node name="Player" type="KinematicBody2D"]
+rotation = -6.28319
 script = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

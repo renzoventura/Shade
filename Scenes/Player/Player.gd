@@ -69,7 +69,7 @@ func attackAnimate():
 	is_attacking = true
 	attackAreaCollision.disabled = false
 	emit_signal("attackAnimate")
-	yield(get_node("PlayerAnimation"), "animation_finished" )
+	yield(get_node("PlayerAnimation"), "animation_finished")
 	is_attacking = false
 	attackAreaCollision.disabled = true
 
