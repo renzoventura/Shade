@@ -1,14 +1,25 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Assets/Environment/floor.png" type="Texture" id=1]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 1598.33, 12.2619 )
+extents = Vector2( 1198.3, 41.2434 )
 
 [node name="Floor" type="StaticBody2D"]
+position = Vector2( 3.896, -9.74008 )
 collision_layer = 8
 collision_mask = 5
+
+[node name="TextureRect" type="TextureRect" parent="."]
+margin_left = -1245.92
+margin_top = -174.634
+margin_right = 1154.08
+margin_bottom = 625.366
+texture = ExtResource( 1 )
 __meta__ = {
-"_edit_group_": true
+"_edit_use_anchors_": false
 }
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( -47.5842, -48.7004 )
 shape = SubResource( 1 )
