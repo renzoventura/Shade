@@ -1,13 +1,13 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://Assets/Player/playerAnimation.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Scenes/Player/playerAnimation.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/Player/Player.gd" type="Script" id=2]
 
-[sub_resource type="CapsuleShape2D" id=6]
+[sub_resource type="CapsuleShape2D" id=1]
 radius = 39.482
 height = 54.8661
 
-[sub_resource type="RectangleShape2D" id=5]
+[sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 53.4169, 65.8811 )
 
 [node name="Player" type="KinematicBody2D"]
@@ -17,7 +17,7 @@ script = ExtResource( 2 )
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
 position = Vector2( -4.20605, 33.6476 )
-shape = SubResource( 6 )
+shape = SubResource( 1 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2( 0.00155264, -347.628 )
@@ -37,7 +37,7 @@ collision_mask = 4
 
 [node name="AttackCollision" type="CollisionShape2D" parent="AttackArea"]
 position = Vector2( -5.30737, -0.663422 )
-shape = SubResource( 5 )
+shape = SubResource( 2 )
 disabled = true
 
 [node name="AttackArea2" type="Area2D" parent="."]
@@ -48,7 +48,7 @@ collision_mask = 4
 
 [node name="AttackCollision" type="CollisionShape2D" parent="AttackArea2"]
 position = Vector2( -113.08, 0.597057 )
-shape = SubResource( 5 )
+shape = SubResource( 2 )
 disabled = true
 [connection signal="animate" from="." to="Sprite" method="_on_Player_animate"]
 [connection signal="attackAnimate" from="." to="Sprite" method="_on_Player_attackAnimate"]
