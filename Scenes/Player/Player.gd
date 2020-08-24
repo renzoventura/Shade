@@ -1,45 +1,36 @@
 extends KinematicBody2D
 
 var is_attacking
-
+var is_facing_right
 var motion = Vector2(0,0)
 var motion_up = Vector2(0,-1)
 var SPEED = 800;
 var JUMP_SPEED = 1800;
 var GRAVITY = 200;
 var MAX_FALL_SPEED = 300
-
 onready var playerAnimation = $PlayerAnimation
 onready var leftAttackArea = $AttackArea
 onready var leftAttackAreaCollision = $AttackArea/AttackCollision
-
 onready var rightAttackArea = $AttackArea2
 onready var rightAttackAreaCollision = $AttackArea2/AttackCollision
-
+onready var animationPlayer = $Sprite/AnimationPlayer
 signal animate
 signal attackAnimate
 
-var is_facing_right
-
-onready var newSprite = $Sprite/AnimationPlayer
 
 func ready():
 	is_facing_right = true;
-	leftAttackArea.set_collision_mask_bit(2, false)
-	is_attacking = false
+	is_attacking = false;
 	
 # warning-ignore:unused_argument
 func _process(delta):
-
 	apply_gravity()
 	if not is_attacking:
 		walk()
-		newMove()
+		animate()
 		jump()
-#		animate()
 		attack()
 		dash()
-
 	move_and_slide(motion, motion_up)
 
 func walk():
@@ -67,29 +58,19 @@ func jump():
 		
 func attack():
 	if Input.is_action_just_pressed("attack"):
-#		attackAnimate()
-		newAttack()
-
-
-func animate():
-	if not is_attacking:
-		emit_signal("animate", motion, GRAVITY, is_facing_right)
-
-func attackAnimate():
-	is_attacking = true
-	if(is_facing_right):
-		leftAttackAreaCollision.disabled = false
-	else:
-		rightAttackAreaCollision.disabled = false
-	emit_signal("attackAnimate")
-	yield(get_node("PlayerAnimation"), "animation_finished")
-	is_attacking = false
-	leftAttackAreaCollision.disabled = true
-	rightAttackAreaCollision.disabled = true
+		is_attacking = true
+		if(is_facing_right):
+			leftAttackAreaCollision.disabled = false
+		else:
+			rightAttackAreaCollision.disabled = false
+		animateAttack()
+		yield(get_node("Sprite/AnimationPlayer"), "animation_finished")
+		is_attacking = false
+		leftAttackAreaCollision.disabled = true
+		rightAttackAreaCollision.disabled = true
 
 func _on_AttackArea_body_entered(body):
 	body.hurt(is_facing_right)
-
 
 func _on_AttackArea2_body_entered(body):
 	body.hurt(is_facing_right)
@@ -101,26 +82,11 @@ func dash():
 		else: 
 			motion.x -= 10000
 
-func newMove():
-	if is_facing_right:
-		$Sprite.flip_h = false
-	else:
-		$Sprite.flip_h = true
-	if motion.x != 0:
-		newSprite.play("walk")
-	else: 
-		newSprite.play("idle")
+func animate():
+	emit_signal("animate", motion, is_facing_right)
+
+func animateAttack():
+	emit_signal("attackAnimate")
 
 
-func newAttack():
-	print("new attack!!!s")
-	is_attacking = true
-	if(is_facing_right):
-		leftAttackAreaCollision.disabled = false
-	else:
-		rightAttackAreaCollision.disabled = false
-	newSprite.play("attack")
-	yield(get_node("Sprite/AnimationPlayer"), "animation_finished")
-	is_attacking = false
-	leftAttackAreaCollision.disabled = true
-	rightAttackAreaCollision.disabled = true
+
