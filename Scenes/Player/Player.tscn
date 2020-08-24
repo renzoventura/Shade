@@ -3,8 +3,9 @@
 [ext_resource path="res://Assets/Player/playerAnimation.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/Player/Player.gd" type="Script" id=2]
 
-[sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 38.9444, 65.9701 )
+[sub_resource type="CapsuleShape2D" id=6]
+radius = 39.482
+height = 54.8661
 
 [sub_resource type="RectangleShape2D" id=5]
 extents = Vector2( 53.4169, 65.8811 )
@@ -14,11 +15,17 @@ rotation = -6.28319
 script = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2( -4.20605, 33.6476 )
-shape = SubResource( 1 )
+shape = SubResource( 6 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
-smoothing_enabled = true
+position = Vector2( 0.00155264, -347.628 )
+current = true
+zoom = Vector2( 2, 2 )
+limit_left = 0
+limit_right = 3158
+offset_v = 1.0
 
 [node name="Sprite" parent="." instance=ExtResource( 1 )]
 

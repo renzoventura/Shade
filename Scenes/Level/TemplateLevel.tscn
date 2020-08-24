@@ -1,34 +1,94 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Scenes/Player/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/Environment/Floor.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Scenes/Player/Enemy.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Assets/Environment/grave.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Environment/hill.png" type="Texture" id=6]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 20.8151, 423.624 )
+extents = Vector2( 32.8691, 423.624 )
 
 [node name="TemplateLevel" type="Node2D"]
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
-position = Vector2( 231.202, 398.334 )
+position = Vector2( 945.239, 593.022 )
 z_index = 2
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 position = Vector2( -21.1295, 319.218 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
-position = Vector2( 52.7426, 0 )
+position = Vector2( 166.032, 70.4909 )
 shape = SubResource( 1 )
 
 [node name="StaticBody2D2" type="StaticBody2D" parent="."]
-position = Vector2( -10.5811, 317.46 )
+position = Vector2( -132.782, 287.321 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2"]
-position = Vector2( 1010.24, 18.0881 )
+position = Vector2( 3157.7, 70.9563 )
 shape = SubResource( 1 )
 
-[node name="Floor" parent="." instance=ExtResource( 2 )]
-position = Vector2( 562.217, 573.203 )
+[node name="Floors" type="Node2D" parent="."]
+position = Vector2( 1202.51, 791.183 )
+
+[node name="Floor" parent="Floors" instance=ExtResource( 2 )]
+position = Vector2( 0, 0 )
+z_index = 5
+
+[node name="Floor2" parent="Floors" instance=ExtResource( 2 )]
+position = Vector2( 2392.41, 0.117615 )
+z_index = 5
 
 [node name="Enemy" parent="." instance=ExtResource( 3 )]
-position = Vector2( 621.905, 414.785 )
+position = Vector2( 2157.6, 669.056 )
+
+[node name="Background" type="Node2D" parent="."]
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="Background"]
+
+[node name="ParallaxLayer3" type="ParallaxLayer" parent="Background/ParallaxBackground"]
+
+[node name="TextureRect" type="TextureRect" parent="Background/ParallaxBackground/ParallaxLayer3"]
+margin_left = 2383.54
+margin_top = -87.8458
+margin_right = 4783.54
+margin_bottom = 712.154
+texture = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ParallaxLayer4" type="ParallaxLayer" parent="Background/ParallaxBackground"]
+position = Vector2( -1760.58, -97.7507 )
+
+[node name="TextureRect" type="TextureRect" parent="Background/ParallaxBackground/ParallaxLayer4"]
+margin_left = 1758.86
+margin_right = 4158.86
+margin_bottom = 800.0
+texture = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="Background/ParallaxBackground"]
+
+[node name="TextureRect" type="TextureRect" parent="Background/ParallaxBackground/ParallaxLayer"]
+margin_right = 2400.0
+margin_bottom = 800.0
+texture = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ParallaxLayer2" type="ParallaxLayer" parent="Background/ParallaxBackground"]
+
+[node name="TextureRect" type="TextureRect" parent="Background/ParallaxBackground/ParallaxLayer2"]
+margin_left = 1779.52
+margin_top = 8.03687
+margin_right = 4179.52
+margin_bottom = 808.037
+texture = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
