@@ -5,9 +5,9 @@ var is_facing_right
 var motion = Vector2(0,0)
 var motion_up = Vector2(0,-1)
 var SPEED = 800;
-var JUMP_SPEED = 1800;
+var JUMP_SPEED = 2500;
 var GRAVITY = 200;
-var MAX_FALL_SPEED = 300
+var MAX_FALL_SPEED = 1200
 onready var playerAnimation = $PlayerAnimation
 onready var leftAttackArea = $AttackArea
 onready var leftAttackAreaCollision = $AttackArea/AttackCollision

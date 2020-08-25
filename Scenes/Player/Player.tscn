@@ -20,11 +20,13 @@ position = Vector2( -4.20605, 33.6476 )
 shape = SubResource( 1 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2( 0.00155264, -347.628 )
+position = Vector2( 2.33426, -348.794 )
 current = true
 zoom = Vector2( 2, 2 )
 limit_left = 0
-limit_right = 3158
+limit_top = -200
+limit_right = 4180
+smoothing_enabled = true
 offset_v = 1.0
 
 [node name="Sprite" parent="." instance=ExtResource( 1 )]
