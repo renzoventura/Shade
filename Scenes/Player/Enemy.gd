@@ -2,7 +2,9 @@ extends KinematicBody2D
 
 var motion = Vector2(0,0)
 var motion_up = Vector2(0,-1)
-var SPEED = 500;
+var SPEED = 10;
+var MAX_SPEED = 600
+var current_speed = 10;
 var JUMP_SPEED = 1800;
 var GRAVITY = 2000;
 var MAX_FALL_SPEED = 3000
@@ -31,7 +33,10 @@ func chase_player(delta):
 	var enemyDirection = 1
 	if(global_position > player.global_position):
 		enemyDirection = -1
-	motion.x = SPEED * enemyDirection
+	
+	if(current_speed <= MAX_SPEED):
+		current_speed += SPEED
+	motion.x = current_speed * enemyDirection
 	$Sprite.flip_h = global_position > player.global_position
 
 func _on_VisibilityNotifier2D_screen_entered():
