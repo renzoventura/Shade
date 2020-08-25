@@ -42,7 +42,7 @@ tracks/0/keys = {
 
 [node name="Enemy" type="KinematicBody2D"]
 collision_layer = 4
-collision_mask = 9
+collision_mask = 13
 script = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -53,6 +53,7 @@ shape = SubResource( 1 )
 texture = ExtResource( 3 )
 vframes = 2
 hframes = 4
+frame = 4
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite"]
 anims/Walk = SubResource( 2 )

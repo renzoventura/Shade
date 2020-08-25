@@ -1,46 +1,51 @@
 extends KinematicBody2D
 
-
 var motion = Vector2(0,0)
 var motion_up = Vector2(0,-1)
-
-var SPEED = 20;
+var SPEED = 500;
 var JUMP_SPEED = 1800;
 var GRAVITY = 2000;
 var MAX_FALL_SPEED = 3000
-
 var life = 3
-
-export(int) var ACCELERATION = 10
+export(int) var ACCELERATION = 5
+var player
 
 func _ready():
 	set_physics_process(true)
+	
+var is_animating = false;
 
 func _physics_process(delta):
 	apply_gravity()
-	var player = get_tree().get_root().find_node("Player", true, false)
-	if player != null:
-		chase_player(player, delta)
-	animate()
+	player = get_tree().get_root().find_node("Player", true, false)
+	
+	if(not is_animating):
+		if player != null:
+			chase_player(delta)
+		animate()
 	die()
+	move_and_slide(motion)
 
-func chase_player(player, delta):
-	var direction = (player.global_position - global_position).normalized()
-	motion += direction * ACCELERATION
+func chase_player(delta):
+	var direction = (player.global_position - global_position)
+	var enemyDirection = 1
+	if(global_position > player.global_position):
+		enemyDirection = -1
+	motion.x = SPEED * enemyDirection
 	$Sprite.flip_h = global_position > player.global_position
-	motion = move_and_slide(motion)
 
 func _on_VisibilityNotifier2D_screen_entered():
 	set_physics_process(true)
 
 func hurt(var is_facing_right):
-	print("OUCH!")
+	is_animating = true
 	life -= 1
 	var direction = 1
-	if(!is_facing_right):
+	if(global_position > player.global_position):
 		direction = -1
 	motion.y -= 700
-	motion.x = 500 * direction
+	motion.x = 5000 * direction
+	is_animating = false
 
 func apply_gravity():
 	if is_on_floor() and motion.y > 0: 
@@ -54,7 +59,8 @@ func apply_gravity():
 func animate():
 	if motion.x != 0:
 		$Sprite/AnimationPlayer.play("Walk")
-
+		yield(get_node("Sprite/AnimationPlayer"), "animation_finished")
+		
 func die():
 	if(life < 0):
 		queue_free()

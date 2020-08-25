@@ -1,19 +1,27 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Scenes/Player/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/Environment/Floor.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Scenes/Player/Enemy.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Assets/Environment/grave.png" type="Texture" id=4]
+[ext_resource path="res://Scenes/Level/GameState.gd" type="Script" id=5]
 [ext_resource path="res://Assets/Environment/hill.png" type="Texture" id=6]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 32.8691, 423.624 )
 
 [node name="TemplateLevel" type="Node2D"]
+script = ExtResource( 5 )
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
-position = Vector2( 945.239, 593.022 )
+position = Vector2( 2454.51, 566.595 )
 z_index = 2
+
+[node name="Enemies" type="Node2D" parent="."]
+position = Vector2( 2157.6, 669.056 )
+
+[node name="Enemy" parent="Enemies" instance=ExtResource( 3 )]
+position = Vector2( -1885.22, -668.694 )
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 position = Vector2( -21.1295, 319.218 )
@@ -39,9 +47,6 @@ z_index = 5
 [node name="Floor2" parent="Floors" instance=ExtResource( 2 )]
 position = Vector2( 2392.41, 0.117615 )
 z_index = 5
-
-[node name="Enemy" parent="." instance=ExtResource( 3 )]
-position = Vector2( 2157.6, 669.056 )
 
 [node name="Background" type="Node2D" parent="."]
 
