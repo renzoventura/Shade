@@ -13,6 +13,25 @@ extents = Vector2( 32.8691, 423.624 )
 [node name="TemplateLevel" type="Node2D"]
 script = ExtResource( 5 )
 
+[node name="walls" type="Node2D" parent="."]
+position = Vector2( -21.1295, 319.218 )
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+position = Vector2( -75.7911, 344.447 )
+collision_layer = 16
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2( 166.032, 70.4909 )
+shape = SubResource( 1 )
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="."]
+position = Vector2( 880.562, 341.983 )
+collision_layer = 16
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2"]
+position = Vector2( 3157.7, 70.9563 )
+shape = SubResource( 1 )
+
 [node name="Player" parent="." instance=ExtResource( 1 )]
 position = Vector2( 2454.51, 566.595 )
 z_index = 2
@@ -21,31 +40,17 @@ z_index = 2
 position = Vector2( 2157.6, 669.056 )
 
 [node name="Enemy" parent="Enemies" instance=ExtResource( 3 )]
-position = Vector2( -1885.22, -668.694 )
-
-[node name="StaticBody2D" type="StaticBody2D" parent="."]
-position = Vector2( -21.1295, 319.218 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
-position = Vector2( 166.032, 70.4909 )
-shape = SubResource( 1 )
-
-[node name="StaticBody2D2" type="StaticBody2D" parent="."]
-position = Vector2( -132.782, 287.321 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2"]
-position = Vector2( 3157.7, 70.9563 )
-shape = SubResource( 1 )
+position = Vector2( 2021.3, -76.7115 )
 
 [node name="Floors" type="Node2D" parent="."]
 position = Vector2( 1202.51, 791.183 )
 
 [node name="Floor" parent="Floors" instance=ExtResource( 2 )]
-position = Vector2( 0, 0 )
+position = Vector2( -180.264, 0 )
 z_index = 5
 
 [node name="Floor2" parent="Floors" instance=ExtResource( 2 )]
-position = Vector2( 2392.41, 0.117615 )
+position = Vector2( 2205.55, 0 )
 z_index = 5
 
 [node name="Background" type="Node2D" parent="."]

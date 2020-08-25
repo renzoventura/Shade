@@ -6,8 +6,8 @@ func _ready():
 func _process(delta):
 	generate_enemies()
 
-var rightSpawnPoint = Vector2(700,-700)
-var leftSpawnPoint = Vector2(-1885.217,-668.694)
+var rightSpawnPoint = Vector2(2021.296,-76.711)
+var leftSpawnPoint = Vector2(-2250.726,-68.302)
 var spawn_points = [rightSpawnPoint, leftSpawnPoint]
 func get_number_off_enemies():
 	return get_node("Enemies").get_child_count();
