@@ -29,18 +29,18 @@ position = Vector2( 880.562, 341.983 )
 collision_layer = 16
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2"]
-position = Vector2( 3157.7, 70.9563 )
+position = Vector2( 3092.81, 60.1412 )
 shape = SubResource( 1 )
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
-position = Vector2( 2454.51, 566.595 )
+position = Vector2( 2208.21, -179.464 )
 z_index = 2
 
 [node name="Enemies" type="Node2D" parent="."]
 position = Vector2( 2157.6, 669.056 )
 
 [node name="Enemy" parent="Enemies" instance=ExtResource( 3 )]
-position = Vector2( 2021.3, -76.7115 )
+position = Vector2( 2234, -76.7115 )
 
 [node name="Floors" type="Node2D" parent="."]
 position = Vector2( 1202.51, 791.183 )

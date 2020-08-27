@@ -22,7 +22,6 @@ func ready():
 	is_facing_right = true;
 	is_attacking = false;
 	
-# warning-ignore:unused_argument
 func _process(delta):
 	apply_gravity()
 	if not is_attacking:
