@@ -13,7 +13,7 @@ const JUMP_SPEED = 1800;
 const GRAVITY = 700;
 const MAX_FALL_SPEED = 3000
 const ACCELERATION = 5
-const HURT_JUMP_SPEED = -3000
+const HURT_JUMP_SPEED = -30
 const ATTACK_RANGE = 100
 const HURT_SPEED = 1000
 
@@ -39,22 +39,27 @@ func _ready():
 	life = number_of_lives[random]
 	SPEED = list_of_speed[random]
 	MAX_SPEED = list_of_max_speed[random]
-	state = States.STOP
+	state = States.CHASE
 
 func _physics_process(delta):
 	apply_gravity()
 	animate()
 	get_direction()
-
+	if state == States.STOP:
+		stop()
 	if state == States.CHASE:
 		if player != null and is_moving:
+			detect_if_within_attacking_range()
 			chase_player(delta)
 	if state == States.ATTACK:
 		attack()
 	if state == States.HURT:
 		damaged()
-	detect_if_within_attacking_range()
 	move_and_slide(motion)
+
+func stop():
+	while(not motion.y < 0 or not motion.x < 0):
+		motion.x -= 100
 
 func change_state(new_state):
 	if new_state == state:
@@ -92,18 +97,19 @@ func _on_VisibilityNotifier2D_screen_entered():
 
 func damaged():
 	timer.start()
-	life -= 1
-	current_speed = 0
-	motion.x = HURT_SPEED * damage_direction
-	motion.y = HURT_JUMP_SPEED
+	$Sprite/AnimationPlayer.play("Hurt")
+	yield(get_node("Sprite/AnimationPlayer"), "animation_finished")
 	die()
-	change_state(States.CHASE)
+	change_state(States.STOP)
 
 func hurt(var is_facing_right):
+	life -= 1
 	if(is_facing_right):
 		damage_direction = 1
 	else: 
 		damage_direction = -1
+	motion.x = HURT_SPEED * damage_direction
+	motion.y = HURT_JUMP_SPEED
 	change_state(States.HURT)
 
 func apply_gravity():
@@ -129,7 +135,9 @@ func _on_Timer_timeout():
 	
 func attack():
 	clear_motion_x()
-	print("Attacking")
+	$Sprite/AnimationPlayer.play("Attack")
+	yield(get_node("Sprite/AnimationPlayer"), "animation_finished")
+	change_state(States.STOP)
 	
 func clear_motion_x():
 	motion.x = 0

@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Scenes/Player/Enemy.gd" type="Script" id=2]
 [ext_resource path="res://Assets/Enemy/enemy-Sheet.png" type="Texture" id=3]
@@ -7,22 +7,54 @@
 radius = 40.5511
 height = 37.2262
 
-[sub_resource type="Animation" id=2]
-resource_name = "Walk"
-length = 1.4
-loop = true
-step = 0.35
+[sub_resource type="Animation" id=4]
+resource_name = "Attack"
+step = 0.05
 tracks/0/type = "value"
-tracks/0/path = NodePath(".:frame")
+tracks/0/path = NodePath(".:frame_coords")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.35, 0.7, 1.05 ),
+"times": PoolRealArray( 0, 0.4, 0.45, 0.5, 0.9 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 2 ), Vector2( 1, 2 ), Vector2( 2, 2 ), Vector2( 3, 2 ), Vector2( 4, 2 ) ]
+}
+
+[sub_resource type="Animation" id=5]
+resource_name = "Hurt"
+length = 0.45
+step = 0.125
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.25, 0.375 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 3 ), Vector2( 1, 3 ), Vector2( 2, 3 ) ]
+}
+
+[sub_resource type="Animation" id=2]
+resource_name = "Walk"
+loop = true
+step = 0.25
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.25, 0.5, 0.75 ),
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
-"update": 1,
-"values": [ 4, 5, 6, 7 ]
+"update": 0,
+"values": [ Vector2( 0, 1 ), Vector2( 1, 1 ), Vector2( 2, 1 ), Vector2( 3, 1 ) ]
 }
 
 [sub_resource type="Animation" id=3]
@@ -51,11 +83,13 @@ shape = SubResource( 1 )
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 3 )
-vframes = 2
-hframes = 4
-frame = 4
+vframes = 5
+hframes = 5
+frame = 17
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite"]
+anims/Attack = SubResource( 4 )
+anims/Hurt = SubResource( 5 )
 anims/Walk = SubResource( 2 )
 anims/idle = SubResource( 3 )
 
