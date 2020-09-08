@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Scenes/Player/Enemy.gd" type="Script" id=2]
 [ext_resource path="res://Assets/Enemy/enemy-Sheet.png" type="Texture" id=3]
@@ -7,7 +7,7 @@
 radius = 40.5511
 height = 37.2262
 
-[sub_resource type="Animation" id=4]
+[sub_resource type="Animation" id=2]
 resource_name = "Attack"
 step = 0.05
 tracks/0/type = "value"
@@ -17,16 +17,16 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.4, 0.45, 0.5, 0.9 ),
+"times": PoolRealArray( 0, 0.5, 0.55, 0.6, 0.9 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
 "update": 0,
 "values": [ Vector2( 0, 2 ), Vector2( 1, 2 ), Vector2( 2, 2 ), Vector2( 3, 2 ), Vector2( 4, 2 ) ]
 }
 
-[sub_resource type="Animation" id=5]
-resource_name = "Hurt"
-length = 0.45
-step = 0.125
+[sub_resource type="Animation" id=6]
+resource_name = "Dead"
+length = 0.5
+step = 0.025
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:frame_coords")
 tracks/0/interp = 1
@@ -34,14 +34,46 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.25, 0.375 ),
+"times": PoolRealArray( 0, 0.2, 0.325, 0.45 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 4 ), Vector2( 1, 4 ), Vector2( 2, 4 ), Vector2( 3, 4 ) ]
+}
+
+[sub_resource type="Animation" id=3]
+resource_name = "Hurt"
+length = 0.3
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 0.25 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
 "values": [ Vector2( 0, 3 ), Vector2( 1, 3 ), Vector2( 2, 3 ) ]
 }
 
-[sub_resource type="Animation" id=2]
-resource_name = "Walk"
+[sub_resource type="Animation" id=7]
+resource_name = "Stagger"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("..:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=4]
 loop = true
 step = 0.25
 tracks/0/type = "value"
@@ -57,8 +89,7 @@ tracks/0/keys = {
 "values": [ Vector2( 0, 1 ), Vector2( 1, 1 ), Vector2( 2, 1 ), Vector2( 3, 1 ) ]
 }
 
-[sub_resource type="Animation" id=3]
-resource_name = "idle"
+[sub_resource type="Animation" id=5]
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:frame_coords")
 tracks/0/interp = 1
@@ -70,6 +101,34 @@ tracks/0/keys = {
 "transitions": PoolRealArray( 1 ),
 "update": 0,
 "values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=8]
+resource_name = "Stagger"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 0.917647, 0.858824, 0.858824, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:self_modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ) ]
 }
 
 [node name="Enemy" type="KinematicBody2D"]
@@ -85,14 +144,24 @@ shape = SubResource( 1 )
 texture = ExtResource( 3 )
 vframes = 5
 hframes = 5
-frame = 17
+frame = 20
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite"]
-anims/Attack = SubResource( 4 )
-anims/Hurt = SubResource( 5 )
-anims/Walk = SubResource( 2 )
-anims/idle = SubResource( 3 )
+anims/Attack = SubResource( 2 )
+anims/Dead = SubResource( 6 )
+anims/Hurt = SubResource( 3 )
+anims/Stagger = SubResource( 7 )
+anims/Walk = SubResource( 4 )
+anims/idle = SubResource( 5 )
 
-[node name="Timer" type="Timer" parent="."]
+[node name="HurtTimer" type="Timer" parent="."]
+process_mode = 0
 wait_time = 0.3
-[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
+
+[node name="DeathTimer" type="Timer" parent="."]
+wait_time = 0.45
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/Stagger = SubResource( 8 )
+[connection signal="timeout" from="HurtTimer" to="." method="_on_Timer_timeout"]
+[connection signal="timeout" from="DeathTimer" to="." method="_on_DeathTimer_timeout"]

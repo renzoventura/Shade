@@ -8,7 +8,6 @@ const list_of_max_speed = [300, 200, 150]
 const list_of_scales = [1.0, 1.5, 5]
 const number_of_lives = [1, 3, 5]
 
-
 const JUMP_SPEED = 1800;
 const GRAVITY = 700;
 const MAX_FALL_SPEED = 3000
@@ -23,19 +22,22 @@ var motion = Vector2(0,0)
 var motion_up = Vector2(0,-1)
 var current_speed = 10;
 var life
-var is_moving = true
 var rng = RandomNumberGenerator.new()
 var damage_direction = 1
 var player
 var state = null
 var direction
-onready var timer = $Timer
+var scale_value
+
+onready var hurt_timer = $HurtTimer
+onready var death_timer = $DeathTimer
 
 func _ready():
 	set_physics_process(true)
 	rng.randomize()
 	var random = rng.randi_range(0, 2)
-	scale = Vector2(list_of_scales[random], list_of_scales[random])
+	scale_value = list_of_scales[random]
+	scale = Vector2(scale_value, scale_value)
 	life = number_of_lives[random]
 	SPEED = list_of_speed[random]
 	MAX_SPEED = list_of_max_speed[random]
@@ -43,23 +45,23 @@ func _ready():
 
 func _physics_process(delta):
 	apply_gravity()
-	animate()
-	get_direction()
 	if state == States.STOP:
 		stop()
-	if state == States.CHASE:
-		if player != null and is_moving:
-			detect_if_within_attacking_range()
-			chase_player(delta)
-	if state == States.ATTACK:
-		attack()
-	if state == States.HURT:
-		damaged()
-	move_and_slide(motion)
+	else:
+		animate()
+		get_direction()
+		if state == States.CHASE:
+			if player != null:
+				detect_if_within_attacking_range()
+				chase_player(delta)
+		if state == States.ATTACK:
+			attack()
+		if state == States.HURT:
+			damaged()
+		move_and_slide(motion)
 
 func stop():
-	while(not motion.y < 0 or not motion.x < 0):
-		motion.x -= 100
+	pass
 
 func change_state(new_state):
 	if new_state == state:
@@ -96,12 +98,15 @@ func _on_VisibilityNotifier2D_screen_entered():
 	set_physics_process(true)
 
 func damaged():
-	timer.start()
-	$Sprite/AnimationPlayer.play("Hurt")
-	yield(get_node("Sprite/AnimationPlayer"), "animation_finished")
+	motion.x = 0
+	hurt_timer.start()
 	die()
-	change_state(States.STOP)
+	if(!scale_value >= list_of_scales[-1]):
+		$Sprite/AnimationPlayer.play("Hurt")
+	else: 
+		$AnimationPlayer.play("Stagger")
 
+	
 func hurt(var is_facing_right):
 	life -= 1
 	if(is_facing_right):
@@ -128,16 +133,22 @@ func animate():
 		
 func die():
 	if(life <= 0):
-		queue_free()
+		change_state(States.STOP)
+		death_timer.start()
+		$Sprite/AnimationPlayer.play("Dead")
+		yield(get_node("Sprite/AnimationPlayer"), "animation_finished")
 
-func _on_Timer_timeout():
-	is_moving = true
-	
 func attack():
 	clear_motion_x()
 	$Sprite/AnimationPlayer.play("Attack")
 	yield(get_node("Sprite/AnimationPlayer"), "animation_finished")
-	change_state(States.STOP)
+	change_state(States.CHASE)
 	
 func clear_motion_x():
 	motion.x = 0
+
+func _on_Timer_timeout():
+	change_state(States.CHASE)
+
+func _on_DeathTimer_timeout():
+	queue_free()
