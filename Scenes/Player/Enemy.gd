@@ -1,6 +1,6 @@
 extends KinematicBody2D
 
-enum States {CHASE, ATTACK, HURT, STOP}
+enum States {CHASE, ATTACK, HURT, STOP, IDLE}
 
 const levels = [1,2,3]
 const list_of_speed = [10, 5, 5]
@@ -31,6 +31,7 @@ var scale_value
 
 onready var hurt_timer = $HurtTimer
 onready var death_timer = $DeathTimer
+onready var attack_timer = $AttackTimer
 
 func _ready():
 	set_physics_process(true)
@@ -42,11 +43,15 @@ func _ready():
 	SPEED = list_of_speed[random]
 	MAX_SPEED = list_of_max_speed[random]
 	state = States.CHASE
+	modulate = Color(1,1,1)
 
 func _physics_process(delta):
+	update_text()
 	apply_gravity()
 	if state == States.STOP:
 		stop()
+	elif state == States.IDLE:
+		detect_if_within_attacking_range()
 	else:
 		animate()
 		get_direction()
@@ -72,6 +77,8 @@ func change_state(new_state):
 		pass
 	if new_state == States.HURT:
 		pass
+	if new_state == States.IDLE:
+		pass
 	state = new_state
 
 func get_direction():
@@ -85,7 +92,7 @@ func chase_player(delta):
 	if(current_speed <= MAX_SPEED):
 		current_speed += SPEED
 	motion.x = current_speed * enemyDirection
-	$Sprite.flip_h = global_position > player.global_position
+	flip_node()
 
 func detect_if_within_attacking_range():
 	var distance_to_player = global_position.distance_to(player.global_position)
@@ -99,23 +106,29 @@ func _on_VisibilityNotifier2D_screen_entered():
 
 func damaged():
 	motion.x = 0
-	hurt_timer.start()
-	die()
-	if(!scale_value >= list_of_scales[-1]):
+	if(hurt_timer.is_stopped()):
+		hurt_timer.start()
+	if(state != States.STOP):
 		$Sprite/AnimationPlayer.play("Hurt")
-	else: 
-		$AnimationPlayer.play("Stagger")
 
-	
 func hurt(var is_facing_right):
-	life -= 1
-	if(is_facing_right):
-		damage_direction = 1
-	else: 
-		damage_direction = -1
-	motion.x = HURT_SPEED * damage_direction
-	motion.y = HURT_JUMP_SPEED
-	change_state(States.HURT)
+	die()
+	if(hurt_timer.is_stopped() and state != States.STOP and state != States.HURT and life > 0):
+		life -= 1
+		if(scale.x != list_of_scales[-1]):
+			print("HURT ANIMATION")
+			$Sprite/AnimationPlayer.stop()
+			if(is_facing_right):
+				damage_direction = 1
+			else: 
+				damage_direction = -1
+			motion.x = HURT_SPEED * damage_direction
+			motion.y = HURT_JUMP_SPEED
+			change_state(States.HURT)
+		else:
+			print("STAGGER ANIMATION")
+			$StaggerAnimation.play("Stagger")
+			
 
 func apply_gravity():
 	if is_on_floor() and motion.y > 0: 
@@ -129,26 +142,40 @@ func apply_gravity():
 func animate():
 	if motion.x != 0:
 		$Sprite/AnimationPlayer.play("Walk")
-		yield(get_node("Sprite/AnimationPlayer"), "animation_finished")
-		
+
 func die():
-	if(life <= 0):
+	if(life <= 0 and state != States.STOP):
 		change_state(States.STOP)
 		death_timer.start()
 		$Sprite/AnimationPlayer.play("Dead")
-		yield(get_node("Sprite/AnimationPlayer"), "animation_finished")
 
 func attack():
 	clear_motion_x()
+	if(attack_timer.is_stopped()):
+		attack_timer.start()
 	$Sprite/AnimationPlayer.play("Attack")
-	yield(get_node("Sprite/AnimationPlayer"), "animation_finished")
-	change_state(States.CHASE)
-	
+
 func clear_motion_x():
 	motion.x = 0
 
-func _on_Timer_timeout():
-	change_state(States.CHASE)
-
 func _on_DeathTimer_timeout():
 	queue_free()
+
+func update_text():
+	$Label.text = States.keys()[state]
+
+func _on_HurtTimer_timeout():
+	if(state != States.STOP):
+		change_state(States.IDLE)
+	else: 
+		change_state(States.STOP)
+
+func _on_AttackTimer_timeout():
+	if(state != States.STOP):
+		change_state(States.IDLE)
+		flip_node()
+	else: 
+		change_state(States.STOP)
+
+func flip_node():
+	$Sprite.flip_h = global_position > player.global_position
