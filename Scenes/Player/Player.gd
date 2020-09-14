@@ -17,7 +17,6 @@ onready var animationPlayer = $Sprite/AnimationPlayer
 signal animate
 signal attackAnimate
 
-
 func ready():
 	is_facing_right = true;
 	is_attacking = false;
