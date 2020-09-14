@@ -8,6 +8,7 @@ var SPEED = 800;
 var JUMP_SPEED = 2500;
 var GRAVITY = 200;
 var MAX_FALL_SPEED = 1200
+var lives = 5
 onready var playerAnimation = $PlayerAnimation
 onready var leftAttackArea = $AttackArea
 onready var leftAttackAreaCollision = $AttackArea/AttackCollision
@@ -16,6 +17,7 @@ onready var rightAttackAreaCollision = $AttackArea2/AttackCollision
 onready var animationPlayer = $Sprite/AnimationPlayer
 signal animate
 signal attackAnimate
+signal die
 
 func ready():
 	is_facing_right = true;
@@ -86,5 +88,12 @@ func animate():
 func animateAttack():
 	emit_signal("attackAnimate")
 
+func hurt():
+	lives = lives - 1
+	checkIfDead()
+
+func checkIfDead():
+	if(lives <= 0):
+		get_tree().call_group("GameState", "playerDied")
 
 

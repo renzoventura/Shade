@@ -63,6 +63,7 @@ func _physics_process(delta):
 			attack()
 		if state == States.HURT:
 			damaged()
+		flip_node()
 		move_and_slide(motion)
 
 func stop():
@@ -92,7 +93,7 @@ func chase_player(delta):
 	if(current_speed <= MAX_SPEED):
 		current_speed += SPEED
 	motion.x = current_speed * enemyDirection
-	flip_node()
+	
 
 func detect_if_within_attacking_range():
 	var distance_to_player = global_position.distance_to(player.global_position)
@@ -116,7 +117,6 @@ func hurt(var is_facing_right):
 	if(hurt_timer.is_stopped() and state != States.STOP and state != States.HURT and life > 0):
 		life -= 1
 		if(scale.x != list_of_scales[-1]):
-			print("HURT ANIMATION")
 			$Sprite/AnimationPlayer.stop()
 			if(is_facing_right):
 				damage_direction = 1
@@ -126,7 +126,6 @@ func hurt(var is_facing_right):
 			motion.y = HURT_JUMP_SPEED
 			change_state(States.HURT)
 		else:
-			print("STAGGER ANIMATION")
 			$StaggerAnimation.play("Stagger")
 			
 
@@ -155,6 +154,13 @@ func attack():
 		attack_timer.start()
 	$Sprite/AnimationPlayer.play("Attack")
 
+func applyAttackCollision():
+	$Weapon/WeaponArea/WeaponAttackShape.disabled = false
+	
+func disableAtttackCollision():
+	$Weapon/WeaponArea/WeaponAttackShape.disabled = true
+	
+	
 func clear_motion_x():
 	motion.x = 0
 
@@ -179,3 +185,8 @@ func _on_AttackTimer_timeout():
 
 func flip_node():
 	$Sprite.flip_h = global_position > player.global_position
+	$Weapon.rotation = direction.angle()
+
+func _on_WeaponArea_body_entered(body):
+	body.hurt()
+
