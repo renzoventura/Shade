@@ -1,5 +1,7 @@
 extends KinematicBody2D
 
+enum States {IDLE, HURT}
+var currentState = States.IDLE
 var is_attacking
 var is_facing_right
 var motion = Vector2(0,0)
@@ -8,6 +10,9 @@ var SPEED = 800;
 var JUMP_SPEED = 2500;
 var GRAVITY = 200;
 var MAX_FALL_SPEED = 1200
+var lives = 5
+var KNOCK_BACK_SPEED = 500
+
 onready var playerAnimation = $PlayerAnimation
 onready var leftAttackArea = $AttackArea
 onready var leftAttackAreaCollision = $AttackArea/AttackCollision
@@ -16,19 +21,25 @@ onready var rightAttackAreaCollision = $AttackArea2/AttackCollision
 onready var animationPlayer = $Sprite/AnimationPlayer
 signal animate
 signal attackAnimate
+signal die
+signal hurtAnimate
 
 func ready():
 	is_facing_right = true;
 	is_attacking = false;
+	currentState = States.IDLE
 	
 func _process(delta):
 	apply_gravity()
-	if not is_attacking:
-		walk()
-		animate()
-		jump()
-		attack()
-		dash()
+	if currentState == States.IDLE:
+		if not is_attacking:
+			walk()
+			animate()
+			jump()
+			attack()
+			dash()
+	elif currentState == States.HURT:
+		damaged()
 	move_and_slide(motion, motion_up)
 
 func walk():
@@ -86,5 +97,38 @@ func animate():
 func animateAttack():
 	emit_signal("attackAnimate")
 
+func animateHurt():
+	emit_signal("hurtAnimate")
+
+func hurt(isLeft):
+	lives = lives - 1
+	print(isLeft)
+	if(isLeft):
+		motion.x = -KNOCK_BACK_SPEED
+	else:
+		motion.x = KNOCK_BACK_SPEED
+	change_state(States.HURT)
 
 
+func checkIfDead():
+	if(lives <= 0):
+		get_tree().call_group("GameState", "playerDied")
+
+func damaged():
+	animateHurt()
+	checkIfDead()
+
+func animationFinished():
+	change_state(States.IDLE)
+
+func knockBack():
+	motion.x = 200
+	
+func change_state(new_state):
+	if new_state == currentState:
+		return
+	if new_state == States.HURT:
+		pass
+	if new_state == States.IDLE:
+		pass
+	currentState = new_state

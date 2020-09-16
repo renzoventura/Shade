@@ -10,7 +10,9 @@ height = 54.8661
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 53.4169, 65.8811 )
 
-[node name="Player" type="KinematicBody2D"]
+[node name="Player" type="KinematicBody2D" groups=[
+"Player",
+]]
 rotation = -6.28319
 script = ExtResource( 2 )
 
@@ -54,5 +56,6 @@ shape = SubResource( 2 )
 disabled = true
 [connection signal="animate" from="." to="Sprite" method="_on_Player_animate"]
 [connection signal="attackAnimate" from="." to="Sprite" method="_on_Player_attackAnimate"]
+[connection signal="hurtAnimate" from="." to="Sprite" method="_on_Player_hurtAnimate"]
 [connection signal="body_entered" from="AttackArea" to="." method="_on_AttackArea_body_entered"]
 [connection signal="body_entered" from="AttackArea2" to="." method="_on_AttackArea2_body_entered"]

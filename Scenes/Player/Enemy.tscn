@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Scenes/Player/Enemy.gd" type="Script" id=2]
 [ext_resource path="res://Assets/Enemy/enemy-Sheet.png" type="Texture" id=3]
@@ -9,7 +9,7 @@ height = 37.2262
 
 [sub_resource type="Animation" id=2]
 resource_name = "Attack"
-step = 0.05
+step = 0.01
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:frame_coords")
 tracks/0/interp = 1
@@ -17,10 +17,27 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.5, 0.55, 0.6, 0.9 ),
+"times": PoolRealArray( 0, 0.4, 0.5, 0.55, 0.9 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
 "update": 0,
 "values": [ Vector2( 0, 2 ), Vector2( 1, 2 ), Vector2( 2, 2 ), Vector2( 3, 2 ), Vector2( 4, 2 ) ]
+}
+tracks/1/type = "method"
+tracks/1/path = NodePath("..")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.55, 0.59 ),
+"transitions": PoolRealArray( 1, 1 ),
+"values": [ {
+"args": [  ],
+"method": "applyAttackCollision"
+}, {
+"args": [  ],
+"method": "disableAtttackCollision"
+} ]
 }
 
 [sub_resource type="Animation" id=3]
@@ -118,7 +135,11 @@ tracks/0/keys = {
 "values": [ Color( 0.0901961, 0.0901961, 0.0901961, 1 ), Color( 1, 1, 1, 1 ) ]
 }
 
+[sub_resource type="RectangleShape2D" id=9]
+extents = Vector2( 42.3931, 43.1991 )
+
 [node name="Enemy" type="KinematicBody2D"]
+modulate = Color( 0.0901961, 0.0901961, 0.0901961, 1 )
 position = Vector2( -1, 0 )
 collision_layer = 4
 collision_mask = 8
@@ -132,7 +153,7 @@ shape = SubResource( 1 )
 texture = ExtResource( 3 )
 vframes = 5
 hframes = 5
-frame = 15
+frame = 10
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite"]
 anims/Attack = SubResource( 2 )
@@ -152,6 +173,9 @@ one_shot = true
 wait_time = 0.5
 one_shot = true
 
+[node name="AttackCoolDown" type="Timer" parent="."]
+one_shot = true
+
 [node name="Label" type="Label" parent="."]
 visible = false
 margin_left = -24.0
@@ -165,6 +189,18 @@ __meta__ = {
 
 [node name="StaggerAnimation" type="AnimationPlayer" parent="."]
 anims/Stagger = SubResource( 8 )
+
+[node name="Weapon" type="Position2D" parent="."]
+
+[node name="WeaponArea" type="Area2D" parent="Weapon"]
+collision_layer = 32
+
+[node name="WeaponAttackShape" type="CollisionShape2D" parent="Weapon/WeaponArea"]
+position = Vector2( 90.8886, 9.28789 )
+shape = SubResource( 9 )
+disabled = true
 [connection signal="timeout" from="AttackTimer" to="." method="_on_AttackTimer_timeout"]
 [connection signal="timeout" from="HurtTimer" to="." method="_on_HurtTimer_timeout"]
 [connection signal="timeout" from="DeathTimer" to="." method="_on_DeathTimer_timeout"]
+[connection signal="timeout" from="AttackCoolDown" to="." method="_on_AttackCoolDown_timeout"]
+[connection signal="body_entered" from="Weapon/WeaponArea" to="." method="_on_WeaponArea_body_entered"]
