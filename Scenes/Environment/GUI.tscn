@@ -1,0 +1,47 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Scenes/Environment/Heart.tscn" type="PackedScene" id=1]
+
+[node name="GUI" type="CanvasLayer"]
+
+[node name="Control" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 1.58667
+margin_top = 3.1734
+margin_right = 1.58667
+margin_bottom = 3.1734
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control"]
+margin_right = 160.0
+margin_bottom = 160.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Heart" parent="Control/HBoxContainer" instance=ExtResource( 1 )]
+margin_left = 0.0
+margin_right = 160.0
+margin_bottom = 160.0
+rect_min_size = Vector2( 1, 0 )
+rect_scale = Vector2( 1, 1 )
+expand = false
+
+[node name="Heart2" parent="Control/HBoxContainer" instance=ExtResource( 1 )]
+margin_left = 164.0
+margin_right = 324.0
+margin_bottom = 160.0
+rect_min_size = Vector2( 1, 0 )
+rect_scale = Vector2( 1, 1 )
+expand = false
+
+[node name="Heart3" parent="Control/HBoxContainer" instance=ExtResource( 1 )]
+margin_left = 328.0
+margin_right = 488.0
+margin_bottom = 160.0
+rect_min_size = Vector2( 1, 0 )
+rect_scale = Vector2( 1, 1 )
+expand = false

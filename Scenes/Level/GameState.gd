@@ -2,7 +2,7 @@ extends Node2D
 
 
 
-onready var timer = $Timer
+onready var timer = $SpawnTimer
 var can_spawn = true
 var rightSpawnPoint = Vector2(2021.296,-76.711)
 var leftSpawnPoint = Vector2(-2241.207,-68.302)

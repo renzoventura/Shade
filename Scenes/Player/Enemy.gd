@@ -127,7 +127,7 @@ func hurt(var is_facing_right):
 			change_state(States.HURT)
 		else:
 			$StaggerAnimation.play("Stagger")
-			
+
 
 func apply_gravity():
 	if is_on_floor() and motion.y > 0: 
@@ -188,4 +188,3 @@ func flip_node():
 
 func _on_WeaponArea_body_entered(body):
 	body.hurt($Sprite.flip_h)
-
