@@ -160,7 +160,6 @@ func applyAttackCollision():
 func disableAtttackCollision():
 	$Weapon/WeaponArea/WeaponAttackShape.disabled = true
 	
-	
 func clear_motion_x():
 	motion.x = 0
 
@@ -188,5 +187,5 @@ func flip_node():
 	$Weapon.rotation = direction.angle()
 
 func _on_WeaponArea_body_entered(body):
-	body.hurt()
+	body.hurt($Sprite.flip_h)
 

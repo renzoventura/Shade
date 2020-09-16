@@ -9,7 +9,7 @@ height = 37.2262
 
 [sub_resource type="Animation" id=2]
 resource_name = "Attack"
-step = 0.05
+step = 0.01
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:frame_coords")
 tracks/0/interp = 1
@@ -29,7 +29,7 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0.55, 0.9 ),
+"times": PoolRealArray( 0.55, 0.59 ),
 "transitions": PoolRealArray( 1, 1 ),
 "values": [ {
 "args": [  ],
@@ -139,6 +139,7 @@ tracks/0/keys = {
 extents = Vector2( 42.3931, 43.1991 )
 
 [node name="Enemy" type="KinematicBody2D"]
+modulate = Color( 0.0901961, 0.0901961, 0.0901961, 1 )
 position = Vector2( -1, 0 )
 collision_layer = 4
 collision_mask = 8

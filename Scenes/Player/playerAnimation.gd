@@ -15,3 +15,11 @@ func _on_Player_animate(motion, is_facing_right):
 
 func _on_Player_attackAnimate():
 	animationPlayer.play("attack")
+
+func _on_Player_hurtAnimate():
+	animationPlayer.play("hurt")
+
+func animationFinished():
+	get_tree().call_group("Player", "animationFinished")
+
+
