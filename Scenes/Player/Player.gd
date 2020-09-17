@@ -135,5 +135,4 @@ func change_state(new_state):
 	currentState = new_state
 
 func update_gui():
-	print("update from player")
 	get_tree().call_group("GameState", "updateLives", lives)

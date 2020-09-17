@@ -1,7 +1,5 @@
 extends Node2D
 
-
-
 onready var timer = $SpawnTimer
 var can_spawn = true
 var rightSpawnPoint = Vector2(2021.296,-76.711)
@@ -37,16 +35,8 @@ func _on_Timer_timeout():
 func playerDied():
 	print("DEAD!")
 
-
 func updateLives(lives):
 	emit_signal("updateLivesGui", lives)
-	
 
 func updateKills():
 	emit_signal("updateKills")
-	
-	
-	
-	
-	
-	
