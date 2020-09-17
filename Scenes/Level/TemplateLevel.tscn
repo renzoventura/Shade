@@ -16,8 +16,10 @@
 position = Vector2( -6.33789, 0 )
 script = ExtResource( 5 )
 
+[node name="GUI" parent="." instance=ExtResource( 9 )]
+
 [node name="Player" parent="." instance=ExtResource( 1 )]
-position = Vector2( 2208.21, -179.464 )
+position = Vector2( 2201.54, -179.464 )
 z_index = 2
 
 [node name="Enemies" type="Node2D" parent="."]
@@ -107,10 +109,10 @@ __meta__ = {
 position = Vector2( -21.1295, 319.218 )
 
 [node name="PlayerWall" parent="Walls" instance=ExtResource( 7 )]
-position = Vector2( 965.071, 22.765 )
+position = Vector2( 552.768, 7.83537 )
 
 [node name="PlayerWall2" parent="Walls" instance=ExtResource( 7 )]
-position = Vector2( -2948.3, 16.9194 )
+position = Vector2( -2354.63, 22.0818 )
 
 [node name="QueueFreeWalls" type="Node2D" parent="."]
 position = Vector2( -21.1295, 319.218 )
@@ -129,6 +131,6 @@ scale = Vector2( 115.097, 0.200432 )
 
 [node name="SpawnTimer" type="Timer" parent="."]
 wait_time = 6.0
-
-[node name="GUI" parent="." instance=ExtResource( 9 )]
+[connection signal="updateKills" from="." to="GUI" method="_on_TemplateLevel_updateKills"]
+[connection signal="updateLivesGui" from="." to="GUI" method="_on_TemplateLevel_updateLivesGui"]
 [connection signal="timeout" from="SpawnTimer" to="." method="_on_Timer_timeout"]

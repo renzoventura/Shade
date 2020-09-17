@@ -7,6 +7,8 @@ var can_spawn = true
 var rightSpawnPoint = Vector2(2021.296,-76.711)
 var leftSpawnPoint = Vector2(-2241.207,-68.302)
 var spawn_points = [rightSpawnPoint, leftSpawnPoint]
+signal updateLivesGui
+signal updateKills
 
 func _ready():
 	timer.start()
@@ -34,3 +36,17 @@ func _on_Timer_timeout():
 	
 func playerDied():
 	print("DEAD!")
+
+
+func updateLives(lives):
+	emit_signal("updateLivesGui", lives)
+	
+
+func updateKills():
+	emit_signal("updateKills")
+	
+	
+	
+	
+	
+	

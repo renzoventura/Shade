@@ -36,7 +36,7 @@ onready var attack_timer = $AttackTimer
 func _ready():
 	set_physics_process(true)
 	rng.randomize()
-	var random = rng.randi_range(0, 2)
+	var random = rng.randi_range(0, 1)
 	scale_value = list_of_scales[random]
 	scale = Vector2(scale_value, scale_value)
 	life = number_of_lives[random]
@@ -56,6 +56,7 @@ func _physics_process(delta):
 		animate()
 		get_direction()
 		if state == States.CHASE:
+			disableAtttackCollision()
 			if player != null:
 				detect_if_within_attacking_range()
 				chase_player(delta)
@@ -144,6 +145,7 @@ func animate():
 
 func die():
 	if(life <= 0 and state != States.STOP):
+		get_tree().call_group("GameState", "updateKills")
 		change_state(States.STOP)
 		death_timer.start()
 		$Sprite/AnimationPlayer.play("Dead")

@@ -13,7 +13,7 @@ var MAX_FALL_SPEED = 1200
 var lives = 5
 var KNOCK_BACK_SPEED = 500
 
-onready var playerAnimation = $PlayerAnimation
+
 onready var leftAttackArea = $AttackArea
 onready var leftAttackAreaCollision = $AttackArea/AttackCollision
 onready var rightAttackArea = $AttackArea2
@@ -24,10 +24,12 @@ signal attackAnimate
 signal die
 signal hurtAnimate
 
-func ready():
+func _ready():
+	lives = 5
 	is_facing_right = true;
 	is_attacking = false;
 	currentState = States.IDLE
+	update_gui()
 	
 func _process(delta):
 	apply_gravity()
@@ -102,13 +104,12 @@ func animateHurt():
 
 func hurt(isLeft):
 	lives = lives - 1
-	print(isLeft)
+	update_gui()
 	if(isLeft):
 		motion.x = -KNOCK_BACK_SPEED
 	else:
 		motion.x = KNOCK_BACK_SPEED
 	change_state(States.HURT)
-
 
 func checkIfDead():
 	if(lives <= 0):
@@ -132,3 +133,7 @@ func change_state(new_state):
 	if new_state == States.IDLE:
 		pass
 	currentState = new_state
+
+func update_gui():
+	print("update from player")
+	get_tree().call_group("GameState", "updateLives", lives)
