@@ -6,9 +6,8 @@
 margin_left = 0.2677
 margin_right = 20.2677
 margin_bottom = 20.0
-rect_scale = Vector2( 0.5, 0.5 )
+rect_scale = Vector2( 0.374938, 0.476375 )
 texture = ExtResource( 1 )
-expand = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
