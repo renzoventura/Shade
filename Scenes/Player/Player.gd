@@ -1,6 +1,6 @@
 extends KinematicBody2D
 
-enum States {IDLE, HURT, SHIELD}
+enum States {IDLE, HURT, SHIELD, DASH}
 enum SoundEffects {ATTACK, HURT, SHIELD, DEATH, BLOCKED}
 var currentState = States.IDLE
 var is_attacking
@@ -20,6 +20,7 @@ onready var rightAttackArea = $AttackArea2
 onready var rightAttackAreaCollision = $AttackArea2/AttackCollision
 onready var animationPlayer = $Sprite/AnimationPlayer
 onready var player_sfx = $PlayerSFX
+onready var dash_timer = $DashTimer
 
 var attack_sfx = load("res://Assets/sfx/player_attack.wav")
 var hurt_sfx = load("res://Assets/sfx/player_hurt.wav")
@@ -31,7 +32,7 @@ signal animate
 signal attackAnimate
 signal hurtAnimate
 signal shieldAnimate
-
+signal dashAnimate
 
 func _ready():
 	lives = 5
@@ -54,6 +55,8 @@ func _process(delta):
 		damaged()
 	elif currentState == States.SHIELD:
 		use_shield()
+	elif currentState == States.DASH:
+		dashing()
 	move_and_slide(motion, motion_up)
 
 func walk():
@@ -80,7 +83,7 @@ func jump():
 		motion.y -= JUMP_SPEED
 		
 func attack():
-	if Input.is_action_just_pressed("attack"):
+	if Input.is_action_just_pressed("attack") and not Input.is_action_just_pressed("shield"):
 		is_attacking = true
 		if(is_facing_right):
 			leftAttackAreaCollision.disabled = false
@@ -102,10 +105,8 @@ func _on_AttackArea2_body_entered(body):
 
 func dash():
 	if Input.is_action_just_pressed("dash"):
-		if(is_facing_right):
-			motion.x = 3000
-		else: 
-			motion.x = -3000
+		change_state(States.DASH)
+		dash_timer.start()
 
 func animate():
 	emit_signal("animate", motion, is_facing_right)
@@ -150,13 +151,15 @@ func change_state(new_state):
 		pass
 	if new_state == States.IDLE:
 		pass
+	if new_state == States.DASH:
+		pass
 	currentState = new_state
 
 func update_gui():
 	get_tree().call_group("GameState", "updateLives", lives)
 	
 func shield():
-	if Input.is_action_just_pressed("shield"):
+	if Input.is_action_just_pressed("shield") and not Input.is_action_just_pressed("attack"):
 		motion.x = 0
 		play_sound(SoundEffects.SHIELD)
 		change_state(States.SHIELD)
@@ -176,3 +179,16 @@ func play_sound(sfx):
 	elif(sfx == SoundEffects.BLOCKED):
 		player_sfx.stream = blocked_sfx
 	player_sfx.play()
+
+func dashing():
+	print("dashing")
+	emit_signal("dashAnimate")
+	if(is_facing_right):
+		motion.x = 2000
+	else: 
+		motion.x = -2000
+	pass
+
+func _on_DashTimer_timeout():
+	print("tim out!")
+	change_state(States.IDLE)

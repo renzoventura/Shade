@@ -24,3 +24,6 @@ func animationFinished():
 
 func _on_Player_shieldAnimate():
 	animationPlayer.play("shield")
+
+func _on_Player_dashAnimate():
+	animationPlayer.play("dash")
