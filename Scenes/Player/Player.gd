@@ -117,7 +117,7 @@ func animateAttack():
 func animateHurt():
 	emit_signal("hurtAnimate")
 
-func hurt(isLeft):
+func hurt(isLeft, caller):
 	if(currentState != States.SHIELD):
 		play_sound(SoundEffects.HURT)
 		lives = lives - 1
@@ -129,6 +129,7 @@ func hurt(isLeft):
 		change_state(States.HURT)
 	else: 
 		play_sound(SoundEffects.BLOCKED)
+		caller.stagger(isLeft)
 
 func checkIfDead():
 	if(lives <= 0):

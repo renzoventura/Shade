@@ -109,7 +109,6 @@ func chase_player(delta):
 	if(current_speed <= MAX_SPEED):
 		current_speed += SPEED
 	motion.x = current_speed * enemyDirection
-	
 
 func detect_if_within_attacking_range():
 	var distance_to_player = global_position.distance_to(player.global_position)
@@ -143,7 +142,6 @@ func hurt(var is_facing_right):
 			change_state(States.HURT)
 		else:
 			$StaggerAnimation.play("Stagger")
-
 
 func apply_gravity():
 	if is_on_floor() and motion.y > 0: 
@@ -205,7 +203,7 @@ func flip_node():
 	$Weapon.rotation = direction.angle()
 
 func _on_WeaponArea_body_entered(body):
-	body.hurt($Sprite.flip_h)
+	body.hurt($Sprite.flip_h, self)
 
 func play_sound(sfx):
 	if (sfx == SoundEffects.ATTACK):
@@ -221,4 +219,11 @@ func play_attack_sfx():
 	
 func play_hurt_sfx():
 	play_sound(SoundEffects.HURT)
+
+func stagger(isLeft):
+	change_state(States.HURT)
+	if(isLeft):
+		motion.x = -20000
+	else:
+		motion.x = 20000
 
