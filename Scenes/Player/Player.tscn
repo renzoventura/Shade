@@ -57,5 +57,6 @@ disabled = true
 [connection signal="animate" from="." to="Sprite" method="_on_Player_animate"]
 [connection signal="attackAnimate" from="." to="Sprite" method="_on_Player_attackAnimate"]
 [connection signal="hurtAnimate" from="." to="Sprite" method="_on_Player_hurtAnimate"]
+[connection signal="shieldAnimate" from="." to="Sprite" method="_on_Player_shieldAnimate"]
 [connection signal="body_entered" from="AttackArea" to="." method="_on_AttackArea_body_entered"]
 [connection signal="body_entered" from="AttackArea2" to="." method="_on_AttackArea2_body_entered"]

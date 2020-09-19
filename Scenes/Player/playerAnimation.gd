@@ -22,4 +22,5 @@ func _on_Player_hurtAnimate():
 func animationFinished():
 	get_tree().call_group("Player", "animationFinished")
 
-
+func _on_Player_shieldAnimate():
+	animationPlayer.play("shield")

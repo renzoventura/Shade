@@ -1,6 +1,6 @@
 extends KinematicBody2D
 
-enum States {IDLE, HURT}
+enum States {IDLE, HURT, SHIELD}
 var currentState = States.IDLE
 var is_attacking
 var is_facing_right
@@ -23,6 +23,7 @@ signal animate
 signal attackAnimate
 signal die
 signal hurtAnimate
+signal shieldAnimate
 
 func _ready():
 	lives = 5
@@ -40,8 +41,11 @@ func _process(delta):
 			jump()
 			attack()
 			dash()
+			shield()
 	elif currentState == States.HURT:
 		damaged()
+	elif currentState == States.SHIELD:
+		use_shield()
 	move_and_slide(motion, motion_up)
 
 func walk():
@@ -103,13 +107,14 @@ func animateHurt():
 	emit_signal("hurtAnimate")
 
 func hurt(isLeft):
-	lives = lives - 1
-	update_gui()
-	if(isLeft):
-		motion.x = -KNOCK_BACK_SPEED
-	else:
-		motion.x = KNOCK_BACK_SPEED
-	change_state(States.HURT)
+	if(currentState != States.SHIELD):
+		lives = lives - 1
+		update_gui()
+		if(isLeft):
+			motion.x = -KNOCK_BACK_SPEED
+		else:
+			motion.x = KNOCK_BACK_SPEED
+		change_state(States.HURT)
 
 func checkIfDead():
 	if(lives <= 0):
@@ -136,3 +141,10 @@ func change_state(new_state):
 
 func update_gui():
 	get_tree().call_group("GameState", "updateLives", lives)
+	
+func shield():
+	if Input.is_action_just_pressed("shield"):
+		change_state(States.SHIELD)
+
+func use_shield():
+	emit_signal("shieldAnimate")
