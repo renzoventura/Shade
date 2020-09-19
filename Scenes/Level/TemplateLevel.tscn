@@ -35,8 +35,16 @@ position = Vector2( 1202.51, 791.183 )
 position = Vector2( -180.264, 0 )
 z_index = 5
 
+[node name="Floor4" parent="Floors" instance=ExtResource( 2 )]
+position = Vector2( -1157.88, 0 )
+z_index = 5
+
 [node name="Floor2" parent="Floors" instance=ExtResource( 2 )]
 position = Vector2( 2205.55, 0 )
+z_index = 5
+
+[node name="Floor3" parent="Floors" instance=ExtResource( 2 )]
+position = Vector2( 3205.55, 0 )
 z_index = 5
 
 [node name="Background" type="Node2D" parent="."]
@@ -118,11 +126,11 @@ position = Vector2( -2354.63, 22.0818 )
 position = Vector2( -21.1295, 319.218 )
 
 [node name="QueueFreeWall" parent="QueueFreeWalls" instance=ExtResource( 8 )]
-position = Vector2( -469.885, 54.6334 )
+position = Vector2( -1131.96, 64.4419 )
 scale = Vector2( 1, 3 )
 
 [node name="QueueFreeWall2" parent="QueueFreeWalls" instance=ExtResource( 8 )]
-position = Vector2( 4885.82, 39.5032 )
+position = Vector2( 5538.09, 59.1203 )
 scale = Vector2( 1, 3 )
 
 [node name="QueueFreeWall3" parent="QueueFreeWalls" instance=ExtResource( 8 )]

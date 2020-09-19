@@ -1,6 +1,7 @@
 extends KinematicBody2D
 
-enum States {IDLE, HURT}
+enum States {IDLE, HURT, SHIELD}
+enum SoundEffects {ATTACK, HURT, SHIELD, DEATH, BLOCKED}
 var currentState = States.IDLE
 var is_attacking
 var is_facing_right
@@ -13,16 +14,24 @@ var MAX_FALL_SPEED = 1200
 var lives = 5
 var KNOCK_BACK_SPEED = 500
 
-
 onready var leftAttackArea = $AttackArea
 onready var leftAttackAreaCollision = $AttackArea/AttackCollision
 onready var rightAttackArea = $AttackArea2
 onready var rightAttackAreaCollision = $AttackArea2/AttackCollision
 onready var animationPlayer = $Sprite/AnimationPlayer
+onready var player_sfx = $PlayerSFX
+
+var attack_sfx = load("res://Assets/sfx/player_attack.wav")
+var hurt_sfx = load("res://Assets/sfx/player_hurt.wav")
+var shield_sfx = load("res://Assets/sfx/shield.wav")
+var blocked_sfx = load("res://Assets/sfx/blocked.wav")
+#var death_sfx = load()
+
 signal animate
 signal attackAnimate
-signal die
 signal hurtAnimate
+signal shieldAnimate
+
 
 func _ready():
 	lives = 5
@@ -40,8 +49,11 @@ func _process(delta):
 			jump()
 			attack()
 			dash()
+			shield()
 	elif currentState == States.HURT:
 		damaged()
+	elif currentState == States.SHIELD:
+		use_shield()
 	move_and_slide(motion, motion_up)
 
 func walk():
@@ -74,6 +86,8 @@ func attack():
 			leftAttackAreaCollision.disabled = false
 		else:
 			rightAttackAreaCollision.disabled = false
+		motion.x = 0
+		play_sound(SoundEffects.ATTACK)
 		animateAttack()
 		yield(get_node("Sprite/AnimationPlayer"), "animation_finished")
 		is_attacking = false
@@ -89,9 +103,9 @@ func _on_AttackArea2_body_entered(body):
 func dash():
 	if Input.is_action_just_pressed("dash"):
 		if(is_facing_right):
-			motion.x += 10000
+			motion.x = 3000
 		else: 
-			motion.x -= 10000
+			motion.x = -3000
 
 func animate():
 	emit_signal("animate", motion, is_facing_right)
@@ -103,13 +117,17 @@ func animateHurt():
 	emit_signal("hurtAnimate")
 
 func hurt(isLeft):
-	lives = lives - 1
-	update_gui()
-	if(isLeft):
-		motion.x = -KNOCK_BACK_SPEED
-	else:
-		motion.x = KNOCK_BACK_SPEED
-	change_state(States.HURT)
+	if(currentState != States.SHIELD):
+		play_sound(SoundEffects.HURT)
+		lives = lives - 1
+		update_gui()
+		if(isLeft):
+			motion.x = -KNOCK_BACK_SPEED
+		else:
+			motion.x = KNOCK_BACK_SPEED
+		change_state(States.HURT)
+	else: 
+		play_sound(SoundEffects.BLOCKED)
 
 func checkIfDead():
 	if(lives <= 0):
@@ -136,3 +154,25 @@ func change_state(new_state):
 
 func update_gui():
 	get_tree().call_group("GameState", "updateLives", lives)
+	
+func shield():
+	if Input.is_action_just_pressed("shield"):
+		motion.x = 0
+		play_sound(SoundEffects.SHIELD)
+		change_state(States.SHIELD)
+
+func use_shield():
+	emit_signal("shieldAnimate")
+
+func play_sound(sfx):
+	if (sfx == SoundEffects.ATTACK):
+		player_sfx.stream = attack_sfx
+	elif (sfx == SoundEffects.HURT):
+		player_sfx.stream = hurt_sfx
+	elif (sfx == SoundEffects.SHIELD):
+		player_sfx.stream = shield_sfx
+	elif (sfx == SoundEffects.DEATH):
+		print("Play death music")
+	elif(sfx == SoundEffects.BLOCKED):
+		player_sfx.stream = blocked_sfx
+	player_sfx.play()

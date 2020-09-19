@@ -1,12 +1,13 @@
 extends KinematicBody2D
 
 enum States {CHASE, ATTACK, HURT, STOP, IDLE}
+enum SoundEffects {ATTACK, HURT, DEATH}
 
-const levels = [1,2,3]
+const levels = [0,1,2]
 const list_of_speed = [10, 5, 5]
-const list_of_max_speed = [300, 200, 150]
+const list_of_max_speed = [650, 450, 150]
 const list_of_scales = [1.0, 1.5, 5]
-const number_of_lives = [1, 3, 5]
+const number_of_lives = [0, 1, 4]
 
 const JUMP_SPEED = 1800;
 const GRAVITY = 700;
@@ -29,21 +30,35 @@ var state = null
 var direction
 var scale_value
 
+var attack_sfx = load("res://Assets/sfx/enemy_attack.wav")
+var hurt_sfx = load("res://Assets/sfx/enemy_hurt.wav")
+var death_sfx = load("res://Assets/sfx/enemy_death.wav")
+
 onready var hurt_timer = $HurtTimer
 onready var death_timer = $DeathTimer
 onready var attack_timer = $AttackTimer
+onready var enemy_sfx = $EnemySFX
+
+var level
+
+func init_boss():
+	level = levels[-1]
 
 func _ready():
 	set_physics_process(true)
-	rng.randomize()
-	var random = rng.randi_range(0, 1)
-	scale_value = list_of_scales[random]
-	scale = Vector2(scale_value, scale_value)
-	life = number_of_lives[random]
-	SPEED = list_of_speed[random]
-	MAX_SPEED = list_of_max_speed[random]
+	if(level == null):
+		rng.randomize()
+		level= rng.randi_range(0, 1)
+	set_params(level)
 	state = States.CHASE
 	modulate = Color(1,1,1)
+
+func set_params(value):
+	scale_value = list_of_scales[value]
+	scale = Vector2(scale_value, scale_value)
+	life = number_of_lives[value]
+	SPEED = list_of_speed[value]
+	MAX_SPEED = list_of_max_speed[value]
 
 func _physics_process(delta):
 	update_text()
@@ -148,6 +163,7 @@ func die():
 		get_tree().call_group("GameState", "updateKills")
 		change_state(States.STOP)
 		death_timer.start()
+		play_sound(SoundEffects.DEATH)
 		$Sprite/AnimationPlayer.play("Dead")
 
 func attack():
@@ -190,3 +206,19 @@ func flip_node():
 
 func _on_WeaponArea_body_entered(body):
 	body.hurt($Sprite.flip_h)
+
+func play_sound(sfx):
+	if (sfx == SoundEffects.ATTACK):
+		enemy_sfx.stream = attack_sfx
+	elif (sfx == SoundEffects.HURT):
+		enemy_sfx.stream = hurt_sfx
+	elif (sfx == SoundEffects.DEATH):
+		enemy_sfx.stream = death_sfx
+	enemy_sfx.play()
+
+func play_attack_sfx():
+	play_sound(SoundEffects.ATTACK)
+	
+func play_hurt_sfx():
+	play_sound(SoundEffects.HURT)
+
