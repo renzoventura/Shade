@@ -221,9 +221,12 @@ func play_hurt_sfx():
 	play_sound(SoundEffects.HURT)
 
 func stagger(isLeft):
-	change_state(States.HURT)
-	if(isLeft):
-		motion.x = -20000
+	if (life >= 1):
+		hurt(isLeft)
 	else:
-		motion.x = 20000
+		change_state(States.HURT)
+		if(isLeft):
+			motion.x = -20000
+		else:
+			motion.x = 20000
 
