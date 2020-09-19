@@ -27,3 +27,4 @@ func _on_Player_shieldAnimate():
 
 func _on_Player_dashAnimate():
 	animationPlayer.play("dash")
+

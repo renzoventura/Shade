@@ -1,7 +1,7 @@
 extends KinematicBody2D
 
 enum States {IDLE, HURT, SHIELD, DASH}
-enum SoundEffects {ATTACK, HURT, SHIELD, DEATH, BLOCKED}
+enum SoundEffects {ATTACK, HURT, SHIELD, DEATH, BLOCKED, DASH}
 var currentState = States.IDLE
 var is_attacking
 var is_facing_right
@@ -26,7 +26,7 @@ var attack_sfx = load("res://Assets/sfx/player_attack.wav")
 var hurt_sfx = load("res://Assets/sfx/player_hurt.wav")
 var shield_sfx = load("res://Assets/sfx/shield.wav")
 var blocked_sfx = load("res://Assets/sfx/blocked.wav")
-#var death_sfx = load()
+var dash_sfx = load("res://Assets/sfx/dash.wav")
 
 signal animate
 signal attackAnimate
@@ -106,6 +106,7 @@ func _on_AttackArea2_body_entered(body):
 func dash():
 	if Input.is_action_just_pressed("dash"):
 		change_state(States.DASH)
+		play_sound(SoundEffects.DASH)
 		dash_timer.start()
 
 func animate():
@@ -179,10 +180,11 @@ func play_sound(sfx):
 		print("Play death music")
 	elif(sfx == SoundEffects.BLOCKED):
 		player_sfx.stream = blocked_sfx
+	elif(sfx == SoundEffects.DASH):
+		player_sfx.stream = dash_sfx
 	player_sfx.play()
 
 func dashing():
-	print("dashing")
 	emit_signal("dashAnimate")
 	if(is_facing_right):
 		motion.x = 2000
@@ -191,5 +193,4 @@ func dashing():
 	pass
 
 func _on_DashTimer_timeout():
-	print("tim out!")
 	change_state(States.IDLE)

@@ -19,7 +19,7 @@ tracks/0/keys = {
 "values": [ 12, 13, 14, 15 ]
 }
 
-[sub_resource type="Animation" id=6]
+[sub_resource type="Animation" id=2]
 resource_name = "dash"
 length = 0.4
 step = 0.025
@@ -36,8 +36,7 @@ tracks/0/keys = {
 "values": [ Vector2( 0, 5 ), Vector2( 1, 5 ), Vector2( 2, 5 ), Vector2( 3, 5 ), Vector2( 4, 5 ), Vector2( 5, 5 ) ]
 }
 
-[sub_resource type="Animation" id=2]
-resource_name = "hurt"
+[sub_resource type="Animation" id=3]
 length = 0.5
 step = 0.05
 tracks/0/type = "value"
@@ -67,7 +66,7 @@ tracks/1/keys = {
 } ]
 }
 
-[sub_resource type="Animation" id=3]
+[sub_resource type="Animation" id=4]
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:frame")
 tracks/0/interp = 1
@@ -81,8 +80,7 @@ tracks/0/keys = {
 "values": [ 0 ]
 }
 
-[sub_resource type="Animation" id=4]
-resource_name = "shield"
+[sub_resource type="Animation" id=5]
 length = 0.5
 step = 0.01
 tracks/0/type = "value"
@@ -112,7 +110,7 @@ tracks/1/keys = {
 } ]
 }
 
-[sub_resource type="Animation" id=5]
+[sub_resource type="Animation" id=6]
 length = 0.4
 loop = true
 tracks/0/type = "value"
@@ -137,8 +135,8 @@ script = ExtResource( 2 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/attack = SubResource( 1 )
-anims/dash = SubResource( 6 )
-anims/hurt = SubResource( 2 )
-anims/idle = SubResource( 3 )
-anims/shield = SubResource( 4 )
-anims/walk = SubResource( 5 )
+anims/dash = SubResource( 2 )
+anims/hurt = SubResource( 3 )
+anims/idle = SubResource( 4 )
+anims/shield = SubResource( 5 )
+anims/walk = SubResource( 6 )
