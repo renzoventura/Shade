@@ -1,6 +1,7 @@
 extends KinematicBody2D
 
 enum States {CHASE, ATTACK, HURT, STOP, IDLE}
+enum SoundEffects {ATTACK, HURT, DEATH}
 
 const levels = [0,1,2]
 const list_of_speed = [10, 5, 5]
@@ -29,9 +30,14 @@ var state = null
 var direction
 var scale_value
 
+var attack_sfx = load("res://Assets/sfx/enemy_attack.wav")
+var hurt_sfx = load("res://Assets/sfx/enemy_hurt.wav")
+var death_sfx = load("res://Assets/sfx/enemy_death.wav")
+
 onready var hurt_timer = $HurtTimer
 onready var death_timer = $DeathTimer
 onready var attack_timer = $AttackTimer
+onready var enemy_sfx = $EnemySFX
 
 var level
 
@@ -157,6 +163,7 @@ func die():
 		get_tree().call_group("GameState", "updateKills")
 		change_state(States.STOP)
 		death_timer.start()
+		play_sound(SoundEffects.DEATH)
 		$Sprite/AnimationPlayer.play("Dead")
 
 func attack():
@@ -199,3 +206,19 @@ func flip_node():
 
 func _on_WeaponArea_body_entered(body):
 	body.hurt($Sprite.flip_h)
+
+func play_sound(sfx):
+	if (sfx == SoundEffects.ATTACK):
+		enemy_sfx.stream = attack_sfx
+	elif (sfx == SoundEffects.HURT):
+		enemy_sfx.stream = hurt_sfx
+	elif (sfx == SoundEffects.DEATH):
+		enemy_sfx.stream = death_sfx
+	enemy_sfx.play()
+
+func play_attack_sfx():
+	play_sound(SoundEffects.ATTACK)
+	
+func play_hurt_sfx():
+	play_sound(SoundEffects.HURT)
+

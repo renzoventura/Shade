@@ -103,9 +103,9 @@ func _on_AttackArea2_body_entered(body):
 func dash():
 	if Input.is_action_just_pressed("dash"):
 		if(is_facing_right):
-			motion.x += 10000
+			motion.x = 3000
 		else: 
-			motion.x -= 10000
+			motion.x = -3000
 
 func animate():
 	emit_signal("animate", motion, is_facing_right)
