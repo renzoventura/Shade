@@ -2,7 +2,7 @@ extends KinematicBody2D
 
 enum States {CHASE, ATTACK, HURT, STOP, IDLE}
 
-const levels = [1,2,3]
+const levels = [0,1,2]
 const list_of_speed = [10, 5, 5]
 const list_of_max_speed = [300, 200, 150]
 const list_of_scales = [1.0, 1.5, 5]
@@ -33,17 +33,25 @@ onready var hurt_timer = $HurtTimer
 onready var death_timer = $DeathTimer
 onready var attack_timer = $AttackTimer
 
+var level
+
+func init_boss():
+	level = levels[-1]
+
 func _ready():
 	set_physics_process(true)
-	rng.randomize()
-	var random = rng.randi_range(0, 1)
-	scale_value = list_of_scales[random]
-	scale = Vector2(scale_value, scale_value)
-	life = number_of_lives[random]
-	SPEED = list_of_speed[random]
-	MAX_SPEED = list_of_max_speed[random]
+	if(level == null):
+		level = levels[randi() % levels.size() - 1]
+	set_params(level)
 	state = States.CHASE
 	modulate = Color(1,1,1)
+
+func set_params(value):
+	scale_value = list_of_scales[value]
+	scale = Vector2(scale_value, scale_value)
+	life = number_of_lives[value]
+	SPEED = list_of_speed[value]
+	MAX_SPEED = list_of_max_speed[value]
 
 func _physics_process(delta):
 	update_text()

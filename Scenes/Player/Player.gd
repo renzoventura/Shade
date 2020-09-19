@@ -21,7 +21,6 @@ onready var rightAttackAreaCollision = $AttackArea2/AttackCollision
 onready var animationPlayer = $Sprite/AnimationPlayer
 signal animate
 signal attackAnimate
-signal die
 signal hurtAnimate
 signal shieldAnimate
 
