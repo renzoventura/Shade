@@ -77,6 +77,7 @@ func attack():
 			leftAttackAreaCollision.disabled = false
 		else:
 			rightAttackAreaCollision.disabled = false
+		motion.x = 0
 		animateAttack()
 		yield(get_node("Sprite/AnimationPlayer"), "animation_finished")
 		is_attacking = false
@@ -143,6 +144,7 @@ func update_gui():
 	
 func shield():
 	if Input.is_action_just_pressed("shield"):
+		motion.x = 0
 		change_state(States.SHIELD)
 
 func use_shield():

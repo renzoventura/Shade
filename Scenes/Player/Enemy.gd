@@ -4,9 +4,9 @@ enum States {CHASE, ATTACK, HURT, STOP, IDLE}
 
 const levels = [0,1,2]
 const list_of_speed = [10, 5, 5]
-const list_of_max_speed = [300, 200, 150]
+const list_of_max_speed = [650, 450, 150]
 const list_of_scales = [1.0, 1.5, 5]
-const number_of_lives = [1, 3, 5]
+const number_of_lives = [0, 1, 4]
 
 const JUMP_SPEED = 1800;
 const GRAVITY = 700;
@@ -41,7 +41,8 @@ func init_boss():
 func _ready():
 	set_physics_process(true)
 	if(level == null):
-		level = levels[randi() % levels.size() - 1]
+		rng.randomize()
+		level= rng.randi_range(0, 1)
 	set_params(level)
 	state = States.CHASE
 	modulate = Color(1,1,1)
