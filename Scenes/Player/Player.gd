@@ -1,6 +1,7 @@
 extends KinematicBody2D
 
 enum States {IDLE, HURT, SHIELD}
+enum SoundEffects {ATTACK, HURT, SHIELD, DEATH, BLOCKED}
 var currentState = States.IDLE
 var is_attacking
 var is_facing_right
@@ -13,16 +14,24 @@ var MAX_FALL_SPEED = 1200
 var lives = 5
 var KNOCK_BACK_SPEED = 500
 
-
 onready var leftAttackArea = $AttackArea
 onready var leftAttackAreaCollision = $AttackArea/AttackCollision
 onready var rightAttackArea = $AttackArea2
 onready var rightAttackAreaCollision = $AttackArea2/AttackCollision
 onready var animationPlayer = $Sprite/AnimationPlayer
+onready var player_sfx = $PlayerSFX
+
+var attack_sfx = load("res://Assets/sfx/player_attack.wav")
+var hurt_sfx = load("res://Assets/sfx/player_hurt.wav")
+var shield_sfx = load("res://Assets/sfx/shield.wav")
+var blocked_sfx = load("res://Assets/sfx/blocked.wav")
+#var death_sfx = load()
+
 signal animate
 signal attackAnimate
 signal hurtAnimate
 signal shieldAnimate
+
 
 func _ready():
 	lives = 5
@@ -78,6 +87,7 @@ func attack():
 		else:
 			rightAttackAreaCollision.disabled = false
 		motion.x = 0
+		play_sound(SoundEffects.ATTACK)
 		animateAttack()
 		yield(get_node("Sprite/AnimationPlayer"), "animation_finished")
 		is_attacking = false
@@ -108,6 +118,7 @@ func animateHurt():
 
 func hurt(isLeft):
 	if(currentState != States.SHIELD):
+		play_sound(SoundEffects.HURT)
 		lives = lives - 1
 		update_gui()
 		if(isLeft):
@@ -115,6 +126,8 @@ func hurt(isLeft):
 		else:
 			motion.x = KNOCK_BACK_SPEED
 		change_state(States.HURT)
+	else: 
+		play_sound(SoundEffects.BLOCKED)
 
 func checkIfDead():
 	if(lives <= 0):
@@ -145,7 +158,21 @@ func update_gui():
 func shield():
 	if Input.is_action_just_pressed("shield"):
 		motion.x = 0
+		play_sound(SoundEffects.SHIELD)
 		change_state(States.SHIELD)
 
 func use_shield():
 	emit_signal("shieldAnimate")
+
+func play_sound(sfx):
+	if (sfx == SoundEffects.ATTACK):
+		player_sfx.stream = attack_sfx
+	elif (sfx == SoundEffects.HURT):
+		player_sfx.stream = hurt_sfx
+	elif (sfx == SoundEffects.SHIELD):
+		player_sfx.stream = shield_sfx
+	elif (sfx == SoundEffects.DEATH):
+		print("Play death music")
+	elif(sfx == SoundEffects.BLOCKED):
+		player_sfx.stream = blocked_sfx
+	player_sfx.play()

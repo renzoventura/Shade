@@ -54,6 +54,8 @@ collision_mask = 4
 position = Vector2( -113.08, 0.597057 )
 shape = SubResource( 2 )
 disabled = true
+
+[node name="PlayerSFX" type="AudioStreamPlayer2D" parent="."]
 [connection signal="animate" from="." to="Sprite" method="_on_Player_animate"]
 [connection signal="attackAnimate" from="." to="Sprite" method="_on_Player_attackAnimate"]
 [connection signal="hurtAnimate" from="." to="Sprite" method="_on_Player_hurtAnimate"]
