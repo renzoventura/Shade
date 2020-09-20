@@ -13,6 +13,7 @@ var GRAVITY = 200;
 var MAX_FALL_SPEED = 1200
 var lives = 5
 var KNOCK_BACK_SPEED = 500
+var shake_amount = 20
 
 onready var leftAttackArea = $AttackArea
 onready var leftAttackAreaCollision = $AttackArea/AttackCollision
@@ -27,15 +28,11 @@ var hurt_sfx = load("res://Assets/sfx/player_hurt.wav")
 var shield_sfx = load("res://Assets/sfx/shield.wav")
 var blocked_sfx = load("res://Assets/sfx/blocked.wav")
 var dash_sfx = load("res://Assets/sfx/dash.wav")
-
 signal animate
 signal attackAnimate
 signal hurtAnimate
 signal shieldAnimate
 signal dashAnimate
-
-var shake_amount = 10
-
 onready var camera = $Camera2D
 
 func _ready():
