@@ -51,7 +51,7 @@ func _process(delta):
 		if not is_attacking:
 			walk()
 			animate()
-			jump()
+#			jump()
 			attack()
 			dash()
 			shield()
