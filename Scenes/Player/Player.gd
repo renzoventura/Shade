@@ -34,6 +34,10 @@ signal hurtAnimate
 signal shieldAnimate
 signal dashAnimate
 
+var shake_amount = 10
+
+onready var camera = $Camera2D
+
 func _ready():
 	lives = 5
 	is_facing_right = true;
@@ -194,3 +198,6 @@ func dashing():
 
 func _on_DashTimer_timeout():
 	change_state(States.IDLE)
+
+func shake_camera():
+	camera.set_offset(Vector2(rand_range(-1.0, 1.0) * shake_amount, rand_range(-1.0, 1.0) * shake_amount))

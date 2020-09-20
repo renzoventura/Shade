@@ -1,7 +1,7 @@
 extends KinematicBody2D
 
 enum States {CHASE, ATTACK, HURT, STOP, IDLE}
-enum SoundEffects {ATTACK, HURT, DEATH}
+enum SoundEffects {ATTACK, HURT, DEATH, BIGSTEP}
 
 const levels = [0,1,2]
 const list_of_speed = [10, 5, 5]
@@ -33,6 +33,7 @@ var scale_value
 var attack_sfx = load("res://Assets/sfx/enemy_attack.wav")
 var hurt_sfx = load("res://Assets/sfx/enemy_hurt.wav")
 var death_sfx = load("res://Assets/sfx/enemy_death.wav")
+var big_step_sfx = load("res://Assets/sfx/big_step.wav")
 
 onready var hurt_timer = $HurtTimer
 onready var death_timer = $DeathTimer
@@ -212,10 +213,13 @@ func play_sound(sfx):
 		enemy_sfx.stream = hurt_sfx
 	elif (sfx == SoundEffects.DEATH):
 		enemy_sfx.stream = death_sfx
+	elif(sfx == SoundEffects.BIGSTEP):
+		enemy_sfx.stream = big_step_sfx
 	enemy_sfx.play()
 
 func play_attack_sfx():
 	play_sound(SoundEffects.ATTACK)
+	shake_camera()
 	
 func play_hurt_sfx():
 	play_sound(SoundEffects.HURT)
@@ -230,3 +234,14 @@ func stagger(isLeft):
 		else:
 			motion.x = 20000
 
+func shake_camera():
+	if (scale.x == list_of_scales[-1] and scale.y == list_of_scales[-1]):
+		get_tree().call_group("Player", "shake_camera")
+
+func play_big_step_sfx():
+	if (scale.x == list_of_scales[-1] and scale.y == list_of_scales[-1]):
+		play_sound(SoundEffects.BIGSTEP)
+
+func shake_and_step():
+	play_big_step_sfx()
+	shake_camera()
