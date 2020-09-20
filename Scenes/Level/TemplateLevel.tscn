@@ -157,7 +157,7 @@ position = Vector2( 2351.24, 1243.52 )
 scale = Vector2( 115.097, 0.200432 )
 
 [node name="SpawnTimer" type="Timer" parent="."]
-wait_time = 6.0
+wait_time = 3.0
 [connection signal="updateKills" from="." to="GUI" method="_on_TemplateLevel_updateKills"]
 [connection signal="updateLivesGui" from="." to="GUI" method="_on_TemplateLevel_updateLivesGui"]
 [connection signal="timeout" from="SpawnTimer" to="." method="_on_Timer_timeout"]

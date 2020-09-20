@@ -6,7 +6,7 @@ var rightSpawnPoint = Vector2(2200,-75)
 var leftSpawnPoint = Vector2(-2200,-70)
 var spawn_points = [rightSpawnPoint, leftSpawnPoint]
 var number_of_enemies = 0 
-var max_number_of_enemies_in_screen = 1
+var max_number_of_enemies_in_screen = 3
 
 signal updateLivesGui
 signal updateKills
@@ -15,7 +15,7 @@ func _ready():
 	timer.start()
 
 func _process(delta):
-	if(get_number_of_enemies() < 1 and can_spawn):
+	if(get_number_of_enemies() < max_number_of_enemies_in_screen and can_spawn):
 		generate_enemies()
 
 func get_number_of_enemies():
