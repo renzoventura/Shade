@@ -19,6 +19,10 @@ config/name="Average Guy"
 run/main_scene="res://Scenes/Level/TemplateLevel.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+BackgroundMusic="*res://Scenes/Global/BackgroundMusic.tscn"
+
 [debug]
 
 settings/fps/force_fps=60

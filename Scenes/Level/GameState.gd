@@ -13,6 +13,8 @@ signal updateKills
 
 func _ready():
 	timer.start()
+	if (not BackgroundMusic.playing):
+		BackgroundMusic.play_game_music()
 
 func _process(delta):
 	if(get_number_of_enemies() < max_number_of_enemies_in_screen and can_spawn):

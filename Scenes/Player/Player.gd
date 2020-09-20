@@ -210,6 +210,7 @@ func shake_camera():
 
 func dying():
 	motion.x = 0
+	BackgroundMusic.set_pitch(true)
 	emit_signal("deadAnimate")
 	get_tree().call_group("Enemy", "disable")
 
