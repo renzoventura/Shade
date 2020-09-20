@@ -141,8 +141,8 @@ func hurt(isLeft, caller):
 func checkIfDead():
 	if(lives <= 0):
 		death_timer.start()
+		dash_timer.stop()
 		change_state(States.DEAD)
-
 
 func damaged():
 	animateHurt()
@@ -214,8 +214,8 @@ func dying():
 	get_tree().call_group("Enemy", "disable")
 
 func _on_DeathTimer_timeout():
-	print("TIME OUT DEATH")
 	get_tree().call_group("GameState", "playerDied")
 
 func disable():
 	player_sprite.visible = false
+
