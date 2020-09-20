@@ -15,7 +15,7 @@ func _ready():
 	timer.start()
 
 func _process(delta):
-	if(get_number_of_enemies() < 2 or can_spawn):
+	if(get_number_of_enemies() < 1 and can_spawn):
 		generate_enemies()
 
 func get_number_of_enemies():

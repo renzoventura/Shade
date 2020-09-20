@@ -20,7 +20,7 @@ script = ExtResource( 5 )
 [node name="GUI" parent="." instance=ExtResource( 9 )]
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
-position = Vector2( 2201.54, -179.464 )
+position = Vector2( 2162.91, -427.123 )
 z_index = 2
 
 [node name="Enemies" type="Node2D" parent="."]
@@ -128,22 +128,18 @@ position = Vector2( 572.343, 157.09 )
 
 [node name="SpriteGate5" parent="Walls" instance=ExtResource( 10 )]
 position = Vector2( 197.866, 157.09 )
-scale = Vector2( 2.5, 3 )
 
 [node name="SpriteGate6" parent="Walls" instance=ExtResource( 10 )]
 position = Vector2( -179.054, 155.862 )
-scale = Vector2( 2.5, 3 )
 
 [node name="SpriteGate2" parent="Walls" instance=ExtResource( 10 )]
 position = Vector2( 3829.92, 157.557 )
 
 [node name="SpriteGate3" parent="Walls" instance=ExtResource( 10 )]
 position = Vector2( 4204.39, 157.557 )
-scale = Vector2( 2.5, 3 )
 
 [node name="SpriteGate4" parent="Walls" instance=ExtResource( 10 )]
 position = Vector2( 4577.11, 159.315 )
-scale = Vector2( 2.5, 3 )
 
 [node name="QueueFreeWalls" type="Node2D" parent="."]
 position = Vector2( -21.1295, 319.218 )

@@ -245,3 +245,6 @@ func play_big_step_sfx():
 func shake_and_step():
 	play_big_step_sfx()
 	shake_camera()
+
+func disable():
+	change_state(States.STOP)

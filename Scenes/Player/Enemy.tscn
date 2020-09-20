@@ -172,7 +172,9 @@ tracks/0/keys = {
 [sub_resource type="RectangleShape2D" id=9]
 extents = Vector2( 42.3931, 43.1991 )
 
-[node name="Enemy" type="KinematicBody2D"]
+[node name="Enemy" type="KinematicBody2D" groups=[
+"Enemy",
+]]
 modulate = Color( 0.0901961, 0.0901961, 0.0901961, 1 )
 position = Vector2( -1, 0 )
 collision_layer = 4

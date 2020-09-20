@@ -1,6 +1,6 @@
 extends KinematicBody2D
 
-enum States {IDLE, HURT, SHIELD, DASH}
+enum States {IDLE, HURT, SHIELD, DASH, DEAD}
 enum SoundEffects {ATTACK, HURT, SHIELD, DEATH, BLOCKED, DASH}
 var currentState = States.IDLE
 var is_attacking
@@ -22,6 +22,8 @@ onready var rightAttackAreaCollision = $AttackArea2/AttackCollision
 onready var animationPlayer = $Sprite/AnimationPlayer
 onready var player_sfx = $PlayerSFX
 onready var dash_timer = $DashTimer
+onready var death_timer = $DeathTimer
+onready var player_sprite = $Sprite
 
 var attack_sfx = load("res://Assets/sfx/player_attack.wav")
 var hurt_sfx = load("res://Assets/sfx/player_hurt.wav")
@@ -33,6 +35,7 @@ signal attackAnimate
 signal hurtAnimate
 signal shieldAnimate
 signal dashAnimate
+signal deadAnimate
 onready var camera = $Camera2D
 
 func _ready():
@@ -58,6 +61,8 @@ func _process(delta):
 		use_shield()
 	elif currentState == States.DASH:
 		dashing()
+	elif currentState == States.DEAD:
+		dying()
 	move_and_slide(motion, motion_up)
 
 func walk():
@@ -135,7 +140,9 @@ func hurt(isLeft, caller):
 
 func checkIfDead():
 	if(lives <= 0):
-		get_tree().call_group("GameState", "playerDied")
+		death_timer.start()
+		change_state(States.DEAD)
+
 
 func damaged():
 	animateHurt()
@@ -155,6 +162,8 @@ func change_state(new_state):
 	if new_state == States.IDLE:
 		pass
 	if new_state == States.DASH:
+		pass
+	if new_state == States.DEAD:
 		pass
 	currentState = new_state
 
@@ -198,3 +207,15 @@ func _on_DashTimer_timeout():
 
 func shake_camera():
 	camera.set_offset(Vector2(rand_range(-1.0, 1.0) * shake_amount, rand_range(-1.0, 1.0) * shake_amount))
+
+func dying():
+	motion.x = 0
+	emit_signal("deadAnimate")
+	get_tree().call_group("Enemy", "disable")
+
+func _on_DeathTimer_timeout():
+	print("TIME OUT DEATH")
+	get_tree().call_group("GameState", "playerDied")
+
+func disable():
+	player_sprite.visible = false
