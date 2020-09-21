@@ -61,17 +61,17 @@ func update_max_number_of_enemies_in_screen():
 
 func show_death_gui():
 	print("Showing death")
-#	for i in range(0, $GUI.get_child_count()):
-#		$GUI.get_child(i).queue_free()
-#	var death_gui = preload("res://Scenes/Environment/DeathGUI.tscn")
-#	$GUI.add_child(death_gui.instance())
+	for i in range(0, $GUI.get_child_count()):
+		$GUI.get_child(i).queue_free()
+	var death_gui = preload("res://Scenes/Environment/DeathGUI.tscn")
+	$GUI.add_child(death_gui.instance())
 
 func show_game_gui():
 	print("Showing game")
-#	for i in range(0, $GUI.get_child_count()):
-#		$GUI.get_child(i).queue_free()
-#	var gui = preload("res://Scenes/Environment/GUI.tscn")
-#	$GUI.add_child(gui.instance())
+	for i in range(0, $GUI.get_child_count()):
+		$GUI.get_child(i).queue_free()
+	var gui = preload("res://Scenes/Environment/GUI.tscn")
+	$GUI.add_child(gui.instance())
 	
 func restart():
 	get_tree().reload_current_scene()
