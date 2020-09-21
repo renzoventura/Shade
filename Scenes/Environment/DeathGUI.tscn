@@ -45,22 +45,22 @@ margin_bottom = 159.0
 alignment = 1
 
 [node name="Skull" parent="Control/CenterContainer/VBoxContainer/HBoxContainer" instance=ExtResource( 3 )]
-margin_left = 221.0
-margin_right = 301.0
+margin_left = 247.0
+margin_right = 327.0
 margin_bottom = 80.0
 
 [node name="Colon" type="Label" parent="Control/CenterContainer/VBoxContainer/HBoxContainer"]
-margin_left = 305.0
+margin_left = 331.0
 margin_top = 10.0
-margin_right = 332.0
+margin_right = 358.0
 margin_bottom = 69.0
 custom_fonts/font = ExtResource( 1 )
 text = ":"
 
 [node name="NumberOfKills" parent="Control/CenterContainer/VBoxContainer/HBoxContainer" instance=ExtResource( 2 )]
-margin_left = 336.0
+margin_left = 362.0
 margin_top = 10.0
-margin_right = 387.0
+margin_right = 362.0
 margin_bottom = 69.0
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="Control/CenterContainer/VBoxContainer"]

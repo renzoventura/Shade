@@ -188,7 +188,7 @@ func play_sound(sfx):
 	elif (sfx == SoundEffects.SHIELD):
 		player_sfx.stream = shield_sfx
 	elif (sfx == SoundEffects.DEATH):
-		print("Play death music")
+		pass
 	elif(sfx == SoundEffects.BLOCKED):
 		player_sfx.stream = blocked_sfx
 	elif(sfx == SoundEffects.DASH):

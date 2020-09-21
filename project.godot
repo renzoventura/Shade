@@ -22,7 +22,8 @@ config/icon="res://icon.png"
 [autoload]
 
 BackgroundMusic="*res://Scenes/Global/BackgroundMusic.tscn"
-NumberOfKills="*res://Scenes/Environment/NumberOfKills.tscn"
+Global="*res://Scenes/Environment/Global.tscn"
+SfxPlayer="*res://Scenes/Global/SfxPlayer.tscn"
 
 [debug]
 

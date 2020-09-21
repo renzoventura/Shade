@@ -20,10 +20,10 @@ func _on_Retry_mouse_exited():
 func _on_Retry_gui_input(event):
 	if event is InputEventMouseButton:
 		if event.button_index == BUTTON_LEFT and event.pressed:
-#			GlobalSoundEffectPlayer.play_click()
+			SfxPlayer.play_sfx()
 			BackgroundMusic.set_pitch(false)
+			Global.reset_kills()
 			get_tree().call_group("GameState", "restart")
-
 
 func _on_Exit_mouse_entered():
 	exit_button.add_color_override("font_color", BLACK)
@@ -34,5 +34,7 @@ func _on_Exit_mouse_exited():
 func _on_Exit_gui_input(event):
 	if event is InputEventMouseButton:
 		if event.button_index == BUTTON_LEFT and event.pressed:
+			SfxPlayer.play_sfx()
 			BackgroundMusic.set_pitch(false)
+			Global.reset_kills()
 			get_tree().call_group("GameState", "restart")
