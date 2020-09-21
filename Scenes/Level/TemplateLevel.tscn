@@ -17,7 +17,9 @@
 position = Vector2( -6.33789, 0 )
 script = ExtResource( 5 )
 
-[node name="GUI" parent="." instance=ExtResource( 9 )]
+[node name="GUI" type="Node2D" parent="."]
+
+[node name="GUI" parent="GUI" instance=ExtResource( 9 )]
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
 position = Vector2( 2162.91, -427.123 )
@@ -158,6 +160,5 @@ scale = Vector2( 115.097, 0.200432 )
 
 [node name="SpawnTimer" type="Timer" parent="."]
 wait_time = 3.0
-[connection signal="updateKills" from="." to="GUI" method="_on_TemplateLevel_updateKills"]
-[connection signal="updateLivesGui" from="." to="GUI" method="_on_TemplateLevel_updateLivesGui"]
+[connection signal="update_lives" from="." to="GUI/GUI" method="_on_TemplateLevel_update_lives"]
 [connection signal="timeout" from="SpawnTimer" to="." method="_on_Timer_timeout"]

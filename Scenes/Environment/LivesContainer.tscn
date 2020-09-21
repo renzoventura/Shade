@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Scenes/Environment/Heart.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Scenes/Environment/LivesContainer.gd" type="Script" id=2]
+
+[node name="LivesContainer" type="HBoxContainer" groups=[
+"LivesContainer",
+]]
+margin_right = 994.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 994, 40 )
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Heart" parent="." instance=ExtResource( 1 )]
+margin_left = 0.0
+margin_right = 40.0
+margin_bottom = 40.0
+rect_scale = Vector2( 1, 1 )

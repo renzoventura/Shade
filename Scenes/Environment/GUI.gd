@@ -1,16 +1,21 @@
 extends CanvasLayer
 
 onready var livesContainer = $Control/VBoxContainer/LivesContainer
-onready var kills_text = $Control/VBoxContainer/HBoxContainer2/Skull/kills
-func _on_TemplateLevel_updateLivesGui(lives):
+
+func hide_gui():
+	print("hiding game")
+	$Control.visible = false
+	
+func show_gui():
+	print("showing game")
+	$Control.visible = true
+
+func _on_TemplateLevel_update_lives(lives):
+	print("test: " + str(lives))
 	for child in livesContainer.get_children():
 		child.queue_free()
 	for i in range(lives):
 		var life = preload("res://Scenes/Environment/Heart.tscn")
 		var lifeInstance = life.instance();
+		print("instance")
 		livesContainer.add_child(lifeInstance)
-	
-func _on_TemplateLevel_updateKills():
-	var kills = int(kills_text.text)
-	kills = kills + 1
-	kills_text.text = str(kills)

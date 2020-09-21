@@ -1,6 +1,9 @@
 extends Node2D
 
 onready var timer = $SpawnTimer
+onready var game_gui = $GUI
+#onready var death_gui = $DeathGUI/DeathGUI
+
 var can_spawn = true
 var rightSpawnPoint = Vector2(2200,-75)
 var leftSpawnPoint = Vector2(-2200,-70)
@@ -8,12 +11,14 @@ var spawn_points = [rightSpawnPoint, leftSpawnPoint]
 var number_of_enemies = 0 
 var max_number_of_enemies_in_screen = 3
 
-signal updateLivesGui
-signal updateKills
+signal update_lives
 
 func _ready():
+	show_game_gui()
+	get_tree().call_group("NumberOfKills", "reset_kills")
 	timer.start()
 	if (not BackgroundMusic.playing):
+		BackgroundMusic.set_pitch(false)
 		BackgroundMusic.play_game_music()
 
 func _process(delta):
@@ -42,13 +47,32 @@ func _on_Timer_timeout():
 	can_spawn = true
 	
 func playerDied():
-	get_tree().reload_current_scene()
+	show_death_gui()
 
 func updateLives(lives):
-	emit_signal("updateLivesGui", lives)
+	print("TEMPLATE LEVEL LIVES")
+	get_tree().call_group("LivesContainer", "update_lives", lives)
 
 func updateKills():
-	emit_signal("updateKills")
+	get_tree().call_group("NumberOfKills", "updateKills")
 
 func update_max_number_of_enemies_in_screen():
 	max_number_of_enemies_in_screen = max_number_of_enemies_in_screen + 1
+
+func show_death_gui():
+	print("Showing death")
+#	for i in range(0, $GUI.get_child_count()):
+#		$GUI.get_child(i).queue_free()
+#	var death_gui = preload("res://Scenes/Environment/DeathGUI.tscn")
+#	$GUI.add_child(death_gui.instance())
+
+func show_game_gui():
+	print("Showing game")
+#	for i in range(0, $GUI.get_child_count()):
+#		$GUI.get_child(i).queue_free()
+#	var gui = preload("res://Scenes/Environment/GUI.tscn")
+#	$GUI.add_child(gui.instance())
+	
+func restart():
+	get_tree().reload_current_scene()
+

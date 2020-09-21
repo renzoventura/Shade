@@ -39,6 +39,7 @@ signal deadAnimate
 onready var camera = $Camera2D
 
 func _ready():
+	BackgroundMusic.play_game_music()
 	lives = 5
 	is_facing_right = true;
 	is_attacking = false;
