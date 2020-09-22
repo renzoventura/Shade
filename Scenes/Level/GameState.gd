@@ -56,7 +56,7 @@ func updateKills():
 	get_tree().call_group("NumberOfKills", "updateKills")
 
 func update_max_number_of_enemies_in_screen():
-	max_number_of_enemies_in_screen = max_number_of_enemies_in_screen + 1
+	max_number_of_enemies_in_screen = max_number_of_enemies_in_screen + 2
 
 func show_death_gui():
 	for i in range(0, $GUI.get_child_count()):
