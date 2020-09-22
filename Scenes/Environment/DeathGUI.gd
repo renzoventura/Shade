@@ -1,7 +1,7 @@
 extends CanvasLayer
 onready var retry_button = $Control/CenterContainer/VBoxContainer/HBoxContainer2/Retry
 onready var exit_button = $Control/CenterContainer/VBoxContainer/HBoxContainer2/Exit
-
+var main_menu_scene = "res://Scenes/UI/MainMenu.tscn"
 const BLACK = Color(0,0,0)
 const WHITE = Color(1,1,1)
 func hide_gui():
@@ -37,4 +37,4 @@ func _on_Exit_gui_input(event):
 			SfxPlayer.play_sfx()
 			BackgroundMusic.set_pitch(false)
 			Global.reset_kills()
-			get_tree().call_group("GameState", "restart")
+			get_tree().change_scene_to(load(str(main_menu_scene)))

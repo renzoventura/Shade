@@ -14,8 +14,6 @@ onready var menu = $VBoxContainer/Menu
 onready var credits = $VBoxContainer/Credits
 onready var control = $VBoxContainer/Controls
 
-
-
 func _ready():
 	BackgroundMusic.play_menu_music()
 	show_menu()
@@ -76,10 +74,8 @@ func _on_BACK_gui_input(event):
 			SfxPlayer.play_sfx()
 			show_menu()
 
-
 func _on_CREDITS_mouse_entered():
 	credits_button.add_color_override("font_color", BLACK)
-
 
 func _on_CREDITS_mouse_exited():
 	credits_button.add_color_override("font_color", WHITE)
@@ -92,17 +88,11 @@ func _on_CREDITS_gui_input(event):
 			SfxPlayer.play_sfx()
 			show_credits()
 
-
-
-
-
 func _on_Label3_mouse_entered():
 	credits_back_button.add_color_override("font_color", BLACK)
 
-
 func _on_Label3_mouse_exited():
 	credits_back_button.add_color_override("font_color", WHITE)
-
 
 func _on_Label3_gui_input(event):
 	if event is InputEventMouseButton:
@@ -110,4 +100,3 @@ func _on_Label3_gui_input(event):
 		if event.button_index == BUTTON_LEFT and event.pressed:
 			SfxPlayer.play_sfx()
 			show_menu()
-
