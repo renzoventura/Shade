@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Scenes/Player/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/Environment/Floor.tscn" type="PackedScene" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://Scenes/Environment/PlayerWall.tscn" type="PackedScene" id=7]
 [ext_resource path="res://Scenes/Environment/QueueFreeWall.tscn" type="PackedScene" id=8]
 [ext_resource path="res://Scenes/Environment/GUI.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Scenes/Environment/SpriteGate.tscn" type="PackedScene" id=10]
 
 [node name="TemplateLevel" type="Node2D" groups=[
 "GameState",
@@ -16,10 +17,12 @@
 position = Vector2( -6.33789, 0 )
 script = ExtResource( 5 )
 
-[node name="GUI" parent="." instance=ExtResource( 9 )]
+[node name="GUI" type="Node2D" parent="."]
+
+[node name="GUI" parent="GUI" instance=ExtResource( 9 )]
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
-position = Vector2( 2201.54, -179.464 )
+position = Vector2( 2162.91, -427.123 )
 z_index = 2
 
 [node name="Enemies" type="Node2D" parent="."]
@@ -122,6 +125,24 @@ position = Vector2( 564.209, 2.1154 )
 [node name="PlayerWall2" parent="Walls" instance=ExtResource( 7 )]
 position = Vector2( -2354.63, 22.0818 )
 
+[node name="SpriteGate" parent="Walls" instance=ExtResource( 10 )]
+position = Vector2( 572.343, 157.09 )
+
+[node name="SpriteGate5" parent="Walls" instance=ExtResource( 10 )]
+position = Vector2( 197.866, 157.09 )
+
+[node name="SpriteGate6" parent="Walls" instance=ExtResource( 10 )]
+position = Vector2( -179.054, 155.862 )
+
+[node name="SpriteGate2" parent="Walls" instance=ExtResource( 10 )]
+position = Vector2( 3829.92, 157.557 )
+
+[node name="SpriteGate3" parent="Walls" instance=ExtResource( 10 )]
+position = Vector2( 4204.39, 157.557 )
+
+[node name="SpriteGate4" parent="Walls" instance=ExtResource( 10 )]
+position = Vector2( 4577.11, 159.315 )
+
 [node name="QueueFreeWalls" type="Node2D" parent="."]
 position = Vector2( -21.1295, 319.218 )
 
@@ -138,7 +159,6 @@ position = Vector2( 2351.24, 1243.52 )
 scale = Vector2( 115.097, 0.200432 )
 
 [node name="SpawnTimer" type="Timer" parent="."]
-wait_time = 6.0
-[connection signal="updateKills" from="." to="GUI" method="_on_TemplateLevel_updateKills"]
-[connection signal="updateLivesGui" from="." to="GUI" method="_on_TemplateLevel_updateLivesGui"]
+wait_time = 2.0
+[connection signal="update_lives" from="." to="GUI/GUI" method="_on_TemplateLevel_update_lives"]
 [connection signal="timeout" from="SpawnTimer" to="." method="_on_Timer_timeout"]

@@ -24,3 +24,12 @@ func animationFinished():
 
 func _on_Player_shieldAnimate():
 	animationPlayer.play("shield")
+
+func _on_Player_dashAnimate():
+	animationPlayer.play("dash")
+
+func _on_Player_deadAnimate():
+	animationPlayer.play("dead")
+
+func free_player():
+	get_tree().call_group("Player", "disable")

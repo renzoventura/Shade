@@ -9,7 +9,7 @@ height = 37.2262
 
 [sub_resource type="Animation" id=2]
 resource_name = "Attack"
-step = 0.01
+step = 0.001
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:frame_coords")
 tracks/0/interp = 1
@@ -29,14 +29,14 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0.55, 0.551, 0.59 ),
+"times": PoolRealArray( 0.549, 0.552, 0.59 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
 "values": [ {
 "args": [  ],
-"method": "applyAttackCollision"
+"method": "play_attack_sfx"
 }, {
 "args": [  ],
-"method": "play_attack_sfx"
+"method": "applyAttackCollision"
 }, {
 "args": [  ],
 "method": "disableAtttackCollision"
@@ -121,6 +121,23 @@ tracks/0/keys = {
 "update": 0,
 "values": [ Vector2( 0, 1 ), Vector2( 1, 1 ), Vector2( 2, 1 ), Vector2( 3, 1 ) ]
 }
+tracks/1/type = "method"
+tracks/1/path = NodePath("..")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.3, 0.7 ),
+"transitions": PoolRealArray( 1, 1 ),
+"values": [ {
+"args": [  ],
+"method": "shake_and_step"
+}, {
+"args": [  ],
+"method": "shake_and_step"
+} ]
+}
 
 [sub_resource type="Animation" id=7]
 tracks/0/type = "value"
@@ -155,7 +172,9 @@ tracks/0/keys = {
 [sub_resource type="RectangleShape2D" id=9]
 extents = Vector2( 42.3931, 43.1991 )
 
-[node name="Enemy" type="KinematicBody2D"]
+[node name="Enemy" type="KinematicBody2D" groups=[
+"Enemy",
+]]
 modulate = Color( 0.0901961, 0.0901961, 0.0901961, 1 )
 position = Vector2( -1, 0 )
 collision_layer = 4
@@ -167,10 +186,11 @@ position = Vector2( -7.25775, -6.09383 )
 shape = SubResource( 1 )
 
 [node name="Sprite" type="Sprite" parent="."]
+position = Vector2( -4.52209, 1.50735 )
 texture = ExtResource( 3 )
 vframes = 5
 hframes = 5
-frame = 15
+frame = 8
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite"]
 anims/Attack = SubResource( 2 )

@@ -1,7 +1,7 @@
 extends KinematicBody2D
 
-enum States {IDLE, HURT, SHIELD}
-enum SoundEffects {ATTACK, HURT, SHIELD, DEATH, BLOCKED}
+enum States {IDLE, HURT, SHIELD, DASH, DEAD}
+enum SoundEffects {ATTACK, HURT, SHIELD, DEATH, BLOCKED, DASH}
 var currentState = States.IDLE
 var is_attacking
 var is_facing_right
@@ -13,6 +13,7 @@ var GRAVITY = 200;
 var MAX_FALL_SPEED = 1200
 var lives = 5
 var KNOCK_BACK_SPEED = 500
+var shake_amount = 20
 
 onready var leftAttackArea = $AttackArea
 onready var leftAttackAreaCollision = $AttackArea/AttackCollision
@@ -20,20 +21,25 @@ onready var rightAttackArea = $AttackArea2
 onready var rightAttackAreaCollision = $AttackArea2/AttackCollision
 onready var animationPlayer = $Sprite/AnimationPlayer
 onready var player_sfx = $PlayerSFX
+onready var dash_timer = $DashTimer
+onready var death_timer = $DeathTimer
+onready var player_sprite = $Sprite
 
 var attack_sfx = load("res://Assets/sfx/player_attack.wav")
 var hurt_sfx = load("res://Assets/sfx/player_hurt.wav")
 var shield_sfx = load("res://Assets/sfx/shield.wav")
 var blocked_sfx = load("res://Assets/sfx/blocked.wav")
-#var death_sfx = load()
-
+var dash_sfx = load("res://Assets/sfx/dash.wav")
 signal animate
 signal attackAnimate
 signal hurtAnimate
 signal shieldAnimate
-
+signal dashAnimate
+signal deadAnimate
+onready var camera = $Camera2D
 
 func _ready():
+	BackgroundMusic.play_game_music()
 	lives = 5
 	is_facing_right = true;
 	is_attacking = false;
@@ -46,7 +52,7 @@ func _process(delta):
 		if not is_attacking:
 			walk()
 			animate()
-			jump()
+#			jump()
 			attack()
 			dash()
 			shield()
@@ -54,6 +60,10 @@ func _process(delta):
 		damaged()
 	elif currentState == States.SHIELD:
 		use_shield()
+	elif currentState == States.DASH:
+		dashing()
+	elif currentState == States.DEAD:
+		dying()
 	move_and_slide(motion, motion_up)
 
 func walk():
@@ -80,7 +90,7 @@ func jump():
 		motion.y -= JUMP_SPEED
 		
 func attack():
-	if Input.is_action_just_pressed("attack"):
+	if Input.is_action_just_pressed("attack") and not Input.is_action_just_pressed("shield"):
 		is_attacking = true
 		if(is_facing_right):
 			leftAttackAreaCollision.disabled = false
@@ -102,10 +112,9 @@ func _on_AttackArea2_body_entered(body):
 
 func dash():
 	if Input.is_action_just_pressed("dash"):
-		if(is_facing_right):
-			motion.x = 3000
-		else: 
-			motion.x = -3000
+		change_state(States.DASH)
+		play_sound(SoundEffects.DASH)
+		dash_timer.start()
 
 func animate():
 	emit_signal("animate", motion, is_facing_right)
@@ -116,7 +125,7 @@ func animateAttack():
 func animateHurt():
 	emit_signal("hurtAnimate")
 
-func hurt(isLeft):
+func hurt(isLeft, caller):
 	if(currentState != States.SHIELD):
 		play_sound(SoundEffects.HURT)
 		lives = lives - 1
@@ -128,10 +137,13 @@ func hurt(isLeft):
 		change_state(States.HURT)
 	else: 
 		play_sound(SoundEffects.BLOCKED)
+		caller.stagger(isLeft)
 
 func checkIfDead():
 	if(lives <= 0):
-		get_tree().call_group("GameState", "playerDied")
+		death_timer.start()
+		dash_timer.stop()
+		change_state(States.DEAD)
 
 func damaged():
 	animateHurt()
@@ -150,13 +162,17 @@ func change_state(new_state):
 		pass
 	if new_state == States.IDLE:
 		pass
+	if new_state == States.DASH:
+		pass
+	if new_state == States.DEAD:
+		pass
 	currentState = new_state
 
 func update_gui():
 	get_tree().call_group("GameState", "updateLives", lives)
 	
 func shield():
-	if Input.is_action_just_pressed("shield"):
+	if Input.is_action_just_pressed("shield") and not Input.is_action_just_pressed("attack"):
 		motion.x = 0
 		play_sound(SoundEffects.SHIELD)
 		change_state(States.SHIELD)
@@ -172,7 +188,36 @@ func play_sound(sfx):
 	elif (sfx == SoundEffects.SHIELD):
 		player_sfx.stream = shield_sfx
 	elif (sfx == SoundEffects.DEATH):
-		print("Play death music")
+		pass
 	elif(sfx == SoundEffects.BLOCKED):
 		player_sfx.stream = blocked_sfx
+	elif(sfx == SoundEffects.DASH):
+		player_sfx.stream = dash_sfx
 	player_sfx.play()
+
+func dashing():
+	emit_signal("dashAnimate")
+	if(is_facing_right):
+		motion.x = 2000
+	else: 
+		motion.x = -2000
+	pass
+
+func _on_DashTimer_timeout():
+	change_state(States.IDLE)
+
+func shake_camera():
+	camera.set_offset(Vector2(rand_range(-1.0, 1.0) * shake_amount, rand_range(-1.0, 1.0) * shake_amount))
+
+func dying():
+	motion.x = 0
+	BackgroundMusic.set_pitch(true)
+	emit_signal("deadAnimate")
+	get_tree().call_group("Enemy", "disable")
+
+func _on_DeathTimer_timeout():
+	get_tree().call_group("GameState", "playerDied")
+
+func disable():
+	player_sprite.visible = false
+

@@ -1,7 +1,7 @@
 extends KinematicBody2D
 
 enum States {CHASE, ATTACK, HURT, STOP, IDLE}
-enum SoundEffects {ATTACK, HURT, DEATH}
+enum SoundEffects {ATTACK, HURT, DEATH, BIGSTEP}
 
 const levels = [0,1,2]
 const list_of_speed = [10, 5, 5]
@@ -33,6 +33,7 @@ var scale_value
 var attack_sfx = load("res://Assets/sfx/enemy_attack.wav")
 var hurt_sfx = load("res://Assets/sfx/enemy_hurt.wav")
 var death_sfx = load("res://Assets/sfx/enemy_death.wav")
+var big_step_sfx = load("res://Assets/sfx/big_step.wav")
 
 onready var hurt_timer = $HurtTimer
 onready var death_timer = $DeathTimer
@@ -109,7 +110,6 @@ func chase_player(delta):
 	if(current_speed <= MAX_SPEED):
 		current_speed += SPEED
 	motion.x = current_speed * enemyDirection
-	
 
 func detect_if_within_attacking_range():
 	var distance_to_player = global_position.distance_to(player.global_position)
@@ -143,7 +143,6 @@ func hurt(var is_facing_right):
 			change_state(States.HURT)
 		else:
 			$StaggerAnimation.play("Stagger")
-
 
 func apply_gravity():
 	if is_on_floor() and motion.y > 0: 
@@ -205,7 +204,7 @@ func flip_node():
 	$Weapon.rotation = direction.angle()
 
 func _on_WeaponArea_body_entered(body):
-	body.hurt($Sprite.flip_h)
+	body.hurt($Sprite.flip_h, self)
 
 func play_sound(sfx):
 	if (sfx == SoundEffects.ATTACK):
@@ -214,11 +213,38 @@ func play_sound(sfx):
 		enemy_sfx.stream = hurt_sfx
 	elif (sfx == SoundEffects.DEATH):
 		enemy_sfx.stream = death_sfx
+	elif(sfx == SoundEffects.BIGSTEP):
+		enemy_sfx.stream = big_step_sfx
 	enemy_sfx.play()
 
 func play_attack_sfx():
 	play_sound(SoundEffects.ATTACK)
+	shake_camera()
 	
 func play_hurt_sfx():
 	play_sound(SoundEffects.HURT)
 
+func stagger(isLeft):
+	if (life >= 1):
+		hurt(isLeft)
+	else:
+		change_state(States.HURT)
+		if(isLeft):
+			motion.x = -20000
+		else:
+			motion.x = 20000
+
+func shake_camera():
+	if (scale.x == list_of_scales[-1] and scale.y == list_of_scales[-1]):
+		get_tree().call_group("Player", "shake_camera")
+
+func play_big_step_sfx():
+	if (scale.x == list_of_scales[-1] and scale.y == list_of_scales[-1]):
+		play_sound(SoundEffects.BIGSTEP)
+
+func shake_and_step():
+	play_big_step_sfx()
+	shake_camera()
+
+func disable():
+	change_state(States.STOP)

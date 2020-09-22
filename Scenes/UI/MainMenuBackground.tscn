@@ -1,0 +1,111 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://Scenes/Environment/Floor.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Assets/Environment/hill.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Environment/grave.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Player/sprite-Sheet.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Enemy/enemy-Sheet.png" type="Texture" id=5]
+
+[node name="MainMenuBackground" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="."]
+margin_left = -149.959
+margin_top = -68.1631
+margin_right = 2250.04
+margin_bottom = 731.837
+rect_scale = Vector2( 0.6, 0.6 )
+texture = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect2" type="TextureRect" parent="."]
+margin_left = -1538.21
+margin_top = -352.176
+margin_right = 861.786
+margin_bottom = 447.824
+rect_scale = Vector2( 0.6, 0.6 )
+rect_pivot_offset = Vector2( 3573.44, 938.214 )
+texture = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Sprite8" type="Sprite" parent="."]
+position = Vector2( 717.906, 362.206 )
+texture = ExtResource( 5 )
+flip_h = true
+vframes = 6
+hframes = 6
+__meta__ = {
+"_editor_description_": "w"
+}
+
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( 149.892, 393.883 )
+scale = Vector2( 0.6, 0.6 )
+texture = ExtResource( 4 )
+vframes = 7
+hframes = 6
+frame = 9
+
+[node name="Sprite2" type="Sprite" parent="."]
+position = Vector2( 740.516, 404.412 )
+scale = Vector2( 0.6, 0.6 )
+texture = ExtResource( 5 )
+flip_h = true
+vframes = 6
+hframes = 6
+
+[node name="Sprite7" type="Sprite" parent="."]
+position = Vector2( 383.272, 410.442 )
+scale = Vector2( 0.6, 0.6 )
+texture = ExtResource( 5 )
+flip_h = true
+vframes = 5
+hframes = 6
+frame = 13
+
+[node name="Sprite5" type="Sprite" parent="."]
+position = Vector2( 520.442, 368.236 )
+texture = ExtResource( 5 )
+flip_h = true
+vframes = 6
+hframes = 6
+__meta__ = {
+"_editor_description_": "w"
+}
+
+[node name="Sprite3" type="Sprite" parent="."]
+position = Vector2( 635.001, 396.875 )
+scale = Vector2( 0.6, 0.6 )
+texture = ExtResource( 5 )
+flip_h = true
+vframes = 6
+hframes = 6
+
+[node name="Sprite4" type="Sprite" parent="."]
+position = Vector2( 470.699, 401.398 )
+scale = Vector2( 0.6, 0.6 )
+texture = ExtResource( 5 )
+flip_h = true
+vframes = 6
+hframes = 6
+
+[node name="Sprite6" type="Sprite" parent="."]
+position = Vector2( 882.208, 288.345 )
+scale = Vector2( 3, 3 )
+texture = ExtResource( 5 )
+flip_h = true
+vframes = 7
+hframes = 5
+frame = 15
+
+[node name="Floor" parent="." instance=ExtResource( 1 )]
+position = Vector2( 549.201, 506.028 )
+scale = Vector2( 0.6, 0.6 )
